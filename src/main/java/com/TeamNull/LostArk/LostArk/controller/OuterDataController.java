@@ -14,10 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 @RestController
@@ -30,7 +28,7 @@ public class OuterDataController {
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
 
     @GetMapping("/statistic/alluser")
-    public Map<String, Integer> alluser() throws IOException, ParseException {
+    public OuterDataDto alluser() throws IOException, ParseException {
         String result;
         URL url = new URL("https://asia-northeast3-loasearch.cloudfunctions.net/app/total?minLv=&maxLv=");
         BufferedReader bf;
@@ -58,22 +56,72 @@ public class OuterDataController {
                 i--;  // remove 했으므로 인덱스 조정
             }
         }
-
-
-
-        Map<String, Integer> classTotalMap = new HashMap<>();
         
-        // 받아온 JSON 배열을 classTotalMap에 저장
+        // 받아온 JSON 배열을 Dto에 넣어서 save
+        OuterDataDto outerDataDto = new OuterDataDto();
         for (Object obj : classTotalArr){
             JSONObject classData = (JSONObject) obj;
             String className = (String) classData.get("className");
             int classTotal = Integer.parseInt(classData.get("classTotal").toString());
-            classTotalMap.put(className, classTotal);
+
+            switch (className) {
+                case "디스트로이어" : outerDataDto.setDestroyer(classTotal);
+                    break;
+                case "버서커" : outerDataDto.setBerserker(classTotal);
+                    break;
+                case "슬레이어" : outerDataDto.setSlayer(classTotal);
+                    break;
+                case "워로드" : outerDataDto.setGunlancer(classTotal);
+                    break;
+                case "홀리나이트" : outerDataDto.setPaladin(classTotal);
+                    break;
+                case "기공사" : outerDataDto.setSoulfist(classTotal);
+                    break;
+                case "배틀마스터" : outerDataDto.setWardancer(classTotal);
+                    break;
+                case "브레이커" : outerDataDto.setBreaker(classTotal);
+                    break;
+                case "스트라이커" : outerDataDto.setStriker(classTotal);
+                    break;
+                case "인파이터" : outerDataDto.setScrapper(classTotal);
+                    break;
+                case "창술사" : outerDataDto.setGlaivier(classTotal);
+                    break;
+                case "건슬링어" : outerDataDto.setGunslinger(classTotal);
+                    break;
+                case "데빌헌터" : outerDataDto.setDeadeye(classTotal);
+                    break;
+                case "블래스터" : outerDataDto.setArtillerist(classTotal);
+                    break;
+                case "스카우터" : outerDataDto.setMachinist(classTotal);
+                    break;
+                case "호크아이" : outerDataDto.setSharpshooter(classTotal);
+                    break;
+                case "바드" : outerDataDto.setBard(classTotal);
+                    break;
+                case "서머너" : outerDataDto.setSummoner(classTotal);
+                    break;
+                case "소서리스" : outerDataDto.setSorceress(classTotal);
+                    break;
+                case "아르카나" : outerDataDto.setArcanist(classTotal);
+                    break;
+                case "데모닉" : outerDataDto.setShadowhunter(classTotal);
+                    break;
+                case "리퍼" : outerDataDto.setReaper(classTotal);
+                    break;
+                case "블레이드" : outerDataDto.setDeathblade(classTotal);
+                    break;
+                case "소울이터" : outerDataDto.setSouleater(classTotal);
+                    break;
+                case "기상술사" : outerDataDto.setAeromancer(classTotal);
+                    break;
+                case "도화가" : outerDataDto.setArtist(classTotal);
+                    break;
+            }
         }
+            outerDataDto.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-        System.out.println(classTotalMap.size());
-
-        return classTotalMap;
+        return outerDataDto;
     }
 
 
