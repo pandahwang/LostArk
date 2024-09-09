@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -22,6 +23,11 @@ import java.util.Optional;
 public class OuterDataService {
 
     private final OuterDataRepository outerDataRepository;
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void update() throws IOException, ParseException {
+        create();
+    }
 
     // outerData DB에 저장
     public void create() throws IOException, ParseException {
@@ -116,6 +122,7 @@ public class OuterDataService {
             }
         }
         outerData.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        outerData.setId(1);
         outerDataRepository.save(outerData);
     }
 
