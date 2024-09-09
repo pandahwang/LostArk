@@ -21,8 +21,9 @@ public class OuterDataController {
 
 
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
+
     @GetMapping("/statistic/alluser")
-    public JSONObject alluser() throws IOException, ParseException {
+    public JSONArray alluser() throws IOException, ParseException {
         String result;
         URL url = new URL("https://asia-northeast3-loasearch.cloudfunctions.net/app/total?minLv=&maxLv=");
         BufferedReader bf;
@@ -32,8 +33,10 @@ public class OuterDataController {
         // 받아온 데이터를 JSON으로 변환
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject)jsonParser.parse(result);
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        JSONArray classTotal = (JSONArray)data.get("classTotal");
 
-        return jsonObject;
+        return classTotal;
     }
 
 
