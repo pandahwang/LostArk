@@ -1,5 +1,6 @@
 package com.TeamNull.LostArk.LostArk.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +8,7 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
+@Builder
 public class OuterDataDto {
     private int id;
     private int berserker;
