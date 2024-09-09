@@ -6,13 +6,9 @@ import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +18,7 @@ public class ResultService {
     private final UserRepository userRepository;
 
     //직업별 성향치
-    public List<JobAttributes> getAlljobAttributes(String jobName) {
+    public List<JobAttributes> getAlljobAttributes() {
         return Arrays.asList(
                 new JobAttributes("Destroyer",3,4,1,2,5),
                 new JobAttributes("Berserker",2,4,2,2,5),
@@ -54,7 +50,31 @@ public class ResultService {
     }
 
 
-    public Optional<User> user(UUID id) {
-        return userRepository.findById(id);
+    public Optional<List<Integer>> user(UUID id) {
+        Optional<User> result = userRepository.findById(id);
+        if (result.isPresent()) {
+            User user = result.get();
+
+            double sum1 = (user.getQuestion1()+ user.getQuestion2())/2;
+            double sum2 = (user.getQuestion3()+ user.getQuestion4())/2;
+            double sum3 = (user.getQuestion5()+ user.getQuestion6())/2;
+            double sum4 = (user.getQuestion7()+ user.getQuestion8())/2;
+            double sum5 = (user.getQuestion9()+ user.getQuestion10())/2;
+
+            List<Integer> results = new ArrayList<>();
+
+            for (JobAttributes job : getAlljobAttributes()) {
+                double totalScore = (sum1 * job.getFriendliness()) +
+                        (sum2 * job.getConscientiousness()) +
+                        (sum3 * job.getExtraversion()) +
+                        (sum4 * job.getOpenness()) +
+                        (sum5 * job.getNeuroticism());
+                System.out.println("직업명 : " +job.getJobName() + "점수 : " + totalScore);
+
+                results.add((int) totalScore);
+            }
+            return Optional.of(results);
+        }
+        return Optional.empty();
     }
 }
