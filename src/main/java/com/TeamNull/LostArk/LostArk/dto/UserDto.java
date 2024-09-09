@@ -7,7 +7,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class UserDto {
 
     private UUID Id;
