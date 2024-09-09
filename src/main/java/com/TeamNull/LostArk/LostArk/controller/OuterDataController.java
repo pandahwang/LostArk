@@ -14,7 +14,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -41,6 +43,23 @@ public class OuterDataController {
         JSONObject data = (JSONObject) jsonObject.get("data");
         JSONArray classTotalArr = (JSONArray)data.get("classTotal");
 
+        for (int i = 0; i < classTotalArr.size(); i++) {
+            JSONObject classData = (JSONObject) classTotalArr.get(i);
+            String className = (String) classData.get("className");
+
+            // 특정 클래스 이름이 있는 경우 해당 객체를 삭제
+            if (className.equals("전사(남)") || className.equals("전사(여)") ||
+                    className.equals("무도가(남)") || className.equals("무도가(여)") ||
+                    className.equals("헌터(남)") || className.equals("헌터(여)") ||
+                    className.equals("마법사") || className.equals("암살자") ||
+                    className.equals("스페셜리스트")) {
+
+                classTotalArr.remove(i);
+                i--;  // remove 했으므로 인덱스 조정
+            }
+        }
+
+
 
         Map<String, Integer> classTotalMap = new HashMap<>();
         
@@ -51,6 +70,8 @@ public class OuterDataController {
             int classTotal = Integer.parseInt(classData.get("classTotal").toString());
             classTotalMap.put(className, classTotal);
         }
+
+        System.out.println(classTotalMap.size());
 
         return classTotalMap;
     }
