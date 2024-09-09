@@ -1,21 +1,28 @@
 package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
+import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
+import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ResultService {
 
     private final ResultRepository resultRepository;
+    private final UserRepository userRepository;
 
-    public List<JobAttributes> getAlljobAttributes() {
+    //직업별 성향치
+    public List<JobAttributes> getAlljobAttributes(String jobName) {
         return Arrays.asList(
                 new JobAttributes("Destroyer",3,4,1,2,5),
                 new JobAttributes("Berserker",2,4,2,2,5),
@@ -44,5 +51,10 @@ public class ResultService {
                 new JobAttributes("Aeromancer",4,3,4,2,2),
                 new JobAttributes("Artist",4,4,4,2,1)
         );
+    }
+
+
+    public Optional<User> user(UUID id) {
+        return userRepository.findById(id);
     }
 }
