@@ -1,15 +1,13 @@
 package com.TeamNull.LostArk.LostArk.dto;
 
-
 import lombok.*;
-
 import java.util.UUID;
 
 @Setter
 @Getter
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class UserDto {
 
     private UUID Id;
