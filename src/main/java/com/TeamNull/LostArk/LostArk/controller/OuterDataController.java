@@ -1,24 +1,13 @@
 package com.TeamNull.LostArk.LostArk.controller;
 
 import com.TeamNull.LostArk.LostArk.dto.OuterDataDto;
-import com.TeamNull.LostArk.LostArk.entity.OuterData;
-import com.TeamNull.LostArk.LostArk.repository.OuterDataRepository;
 import com.TeamNull.LostArk.LostArk.service.OuterDataService;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.*;
-
 
 @RestController
 @RequiredArgsConstructor
