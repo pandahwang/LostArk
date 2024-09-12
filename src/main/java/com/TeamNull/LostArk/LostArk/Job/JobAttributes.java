@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JobAttributes {
     private final String jobName;
-    private final int friendliness;
+    private final int Agreeableness;
     private final int conscientiousness;
     private final int extraversion;
     private final int openness;
