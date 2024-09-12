@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,8 +97,11 @@ public class ResultService {
        result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4).getJobName() : null);
 
        resultRepository.save(result);
+
 //Data 테이블 매핑
        Data data = dataRepository.findById(1).orElseThrow(()-> new IllegalArgumentException("Data not found"));
+//저장될때마다 createdAt 갱신
+       data.setCreatedAt(Timestamp.from(Instant.now()));
 //1위 직업 카운트 1 증가
        switch (result.getTopFactor1()) {
            case "Berserker":
@@ -173,5 +178,6 @@ public class ResultService {
        }
 
        dataRepository.save(data);
+
    }
 }
