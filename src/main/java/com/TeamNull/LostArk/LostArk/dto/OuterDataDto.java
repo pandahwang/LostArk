@@ -16,9 +16,6 @@ public class OuterDataDto {
 
     public OuterDataDto(String name, int value , Long total, String icon) {
         double percentage =  (double) value / total * 100;
-        System.out.println("value:"+value);
-        System.out.println("total:"+total);
-        System.out.println("percentage:" + percentage);
         this.name = name;
         this.percentage = (double) (Math.round(percentage * 100) / 100.0);
         this.icon = icon;
