@@ -2,6 +2,7 @@ package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
 import com.TeamNull.LostArk.LostArk.dto.UserDto;
+import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
@@ -55,7 +56,7 @@ public class ResultService {
    @Transactional
     public void top5 (UUID id){
         User user= userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("user not found"));
-
+//테스트 항목 평균값 계산
         double avg1 = (user.getQuestion1()+user.getQuestion2())/2.0;
         double avg2 = (user.getQuestion3()+user.getQuestion4())/2.0;
         double avg3 = (user.getQuestion5()+user.getQuestion6())/2.0;
@@ -63,7 +64,7 @@ public class ResultService {
         double avg5 = (user.getQuestion9()+user.getQuestion10())/2.0;
 
         List<JobAttributes> results = getAlljobAttributes();
-
+//각 성향별 점수 책정
         Map<JobAttributes, Double> jobScores = results.stream()
                .collect(Collectors.toMap(
                        job -> job,
@@ -74,14 +75,23 @@ public class ResultService {
                                avg5 * job.getNeuroticism()
                ));
 
-
+//상위 5개 직업 선별
         List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
                .sorted(Map.Entry.<JobAttributes, Double>comparingByValue().reversed())
                .limit(5)
                .map(Map.Entry::getKey)
                .collect(Collectors.toList());
 
-       top5Jobs.forEach(job -> System.out.println("Job Name: " + job.getJobName() + ", Score: " + jobScores.get(job)));
+       Result result = new Result();
+       result.setUser(user);
+//1위 부터 5위까지 저장
+       result.setTopFactor1(top5Jobs.size() > 0 ? top5Jobs.get(0).getJobName() : null);
+       result.setTopFactor2(top5Jobs.size() > 1 ? top5Jobs.get(1).getJobName() : null);
+       result.setTopFactor3(top5Jobs.size() > 2 ? top5Jobs.get(2).getJobName() : null);
+       result.setTopFactor4(top5Jobs.size() > 3 ? top5Jobs.get(3).getJobName() : null);
+       result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4).getJobName() : null);
+
+       resultRepository.save(result);
    }
     
 }
