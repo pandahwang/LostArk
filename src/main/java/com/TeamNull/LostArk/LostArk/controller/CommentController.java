@@ -21,7 +21,11 @@ import java.util.Map;
 @RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
-}
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+        @PostMapping("")
+        public void addComment(@RequestBody CommentDto commentDto) {
+            commentService.commentAdd(commentDto.getContent(), commentDto.getPassword(), commentDto.getUser());
+        }
+
