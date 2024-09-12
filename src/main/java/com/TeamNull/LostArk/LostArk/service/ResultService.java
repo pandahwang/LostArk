@@ -2,8 +2,10 @@ package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
 import com.TeamNull.LostArk.LostArk.dto.UserDto;
+import com.TeamNull.LostArk.LostArk.entity.Data;
 import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
+import com.TeamNull.LostArk.LostArk.repository.DataRepository;
 import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class ResultService {
 
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
+    private final DataRepository dataRepository;
 
     //직업별 성향치
     public List<JobAttributes> getAlljobAttributes() {
@@ -54,18 +57,18 @@ public class ResultService {
     }
 
    @Transactional
-    public void top5 (UUID id){
-        User user= userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("user not found"));
+    public void top5 (UUID id) {
+       User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("user not found"));
 //테스트 항목 평균값 계산
-        double avg1 = (user.getQuestion1()+user.getQuestion2())/2.0;
-        double avg2 = (user.getQuestion3()+user.getQuestion4())/2.0;
-        double avg3 = (user.getQuestion5()+user.getQuestion6())/2.0;
-        double avg4 = (user.getQuestion7()+user.getQuestion8())/2.0;
-        double avg5 = (user.getQuestion9()+user.getQuestion10())/2.0;
+       double avg1 = (user.getQuestion1() + user.getQuestion2()) / 2.0;
+       double avg2 = (user.getQuestion3() + user.getQuestion4()) / 2.0;
+       double avg3 = (user.getQuestion5() + user.getQuestion6()) / 2.0;
+       double avg4 = (user.getQuestion7() + user.getQuestion8()) / 2.0;
+       double avg5 = (user.getQuestion9() + user.getQuestion10()) / 2.0;
 
-        List<JobAttributes> results = getAlljobAttributes();
+       List<JobAttributes> results = getAlljobAttributes();
 //각 성향별 점수 책정
-        Map<JobAttributes, Double> jobScores = results.stream()
+       Map<JobAttributes, Double> jobScores = results.stream()
                .collect(Collectors.toMap(
                        job -> job,
                        job -> avg1 * job.getAgreeableness() +
@@ -76,7 +79,7 @@ public class ResultService {
                ));
 
 //상위 5개 직업 선별
-        List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
+       List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
                .sorted(Map.Entry.<JobAttributes, Double>comparingByValue().reversed())
                .limit(5)
                .map(Map.Entry::getKey)
@@ -92,6 +95,83 @@ public class ResultService {
        result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4).getJobName() : null);
 
        resultRepository.save(result);
+//Data 테이블 매핑
+       Data data = dataRepository.findById(1).orElseThrow(()-> new IllegalArgumentException("Data not found"));
+//1위 직업 카운트 1 증가
+       switch (result.getTopFactor1()) {
+           case "Berserker":
+               data.setBerserker(data.getBerserker() + 1);
+               break;
+           case "Destroyer":
+               data.setDestroyer(data.getDestroyer() + 1);
+               break;
+           case "Gunlancer":
+               data.setGunlancer(data.getGunlancer() + 1);
+               break;
+           case "Paladin":
+               data.setPaladin(data.getPaladin() + 1);
+               break;
+           case "Slayer":
+               data.setSlayer(data.getSlayer() + 1);
+               break;
+           case "Arcanist":
+               data.setArcanist(data.getArcanist() + 1);
+               break;
+           case "Summoner":
+               data.setSummoner(data.getSummoner() + 1);
+               break;
+           case "Bard":
+               data.setBard(data.getBard() + 1);
+               break;
+           case "Sorceress":
+               data.setSorceress(data.getSorceress() + 1);
+               break;
+           case "Wardancer":
+               data.setWardancer(data.getWardancer() + 1);
+               break;
+           case "Scrapper":
+               data.setScrapper(data.getScrapper() + 1);
+               break;
+           case "Soulfist":
+               data.setSoulfist(data.getSoulfist() + 1);
+               break;
+           case "Glaivier":
+               data.setGlaivier(data.getGlaivier() + 1);
+               break;
+           case "Striker":
+               data.setStriker(data.getStriker() + 1);
+               break;
+           case "Deathblade":
+               data.setDeathblade(data.getDeathblade() + 1);
+               break;
+           case "Shadowhunter":
+               data.setShadowhunter(data.getShadowhunter() + 1);
+               break;
+           case "Reaper":
+               data.setReaper(data.getReaper() + 1);
+               break;
+           case "Sharpshooter":
+               data.setSharpshooter(data.getSharpshooter() + 1);
+               break;
+           case "Deadeye":
+               data.setDeadeye(data.getDeadeye() + 1);
+               break;
+           case "Artillerist":
+               data.setArtillerist(data.getArtillerist() + 1);
+               break;
+           case "Aeromancer":
+               data.setAeromancer(data.getAeromancer() + 1);
+               break;
+           case "Machinist":
+               data.setMachinist(data.getMachinist() + 1);
+               break;
+           case "Gunslinger":
+               data.setGunslinger(data.getGunslinger() + 1);
+               break;
+           default:
+               throw new IllegalArgumentException("Unknown job: " + result.getTopFactor1());
+       }
+
+       dataRepository.save(data);
    }
-    
 }
