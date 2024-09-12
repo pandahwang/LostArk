@@ -1,14 +1,17 @@
 package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
+import com.TeamNull.LostArk.LostArk.dto.UserDto;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,32 +52,36 @@ public class ResultService {
         );
     }
 
+   @Transactional
+    public void top5 (UUID id){
+        User user= userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("user not found"));
 
-    public Optional<List<Integer>> user(UUID id) {
-        Optional<User> result = userRepository.findById(id);
-        if (result.isPresent()) {
-            User user = result.get();
+        double avg1 = (user.getQuestion1()+user.getQuestion2())/2.0;
+        double avg2 = (user.getQuestion3()+user.getQuestion4())/2.0;
+        double avg3 = (user.getQuestion5()+user.getQuestion6())/2.0;
+        double avg4 = (user.getQuestion7()+user.getQuestion8())/2.0;
+        double avg5 = (user.getQuestion9()+user.getQuestion10())/2.0;
 
-            double sum1 = (user.getQuestion1()+ user.getQuestion2())/2;
-            double sum2 = (user.getQuestion3()+ user.getQuestion4())/2;
-            double sum3 = (user.getQuestion5()+ user.getQuestion6())/2;
-            double sum4 = (user.getQuestion7()+ user.getQuestion8())/2;
-            double sum5 = (user.getQuestion9()+ user.getQuestion10())/2;
+        List<JobAttributes> results = getAlljobAttributes();
 
-            List<Integer> results = new ArrayList<>();
+        Map<JobAttributes, Double> jobScores = results.stream()
+               .collect(Collectors.toMap(
+                       job -> job,
+                       job -> avg1 * job.getAgreeableness() +
+                               avg2 * job.getConscientiousness() +
+                               avg3 * job.getExtraversion() +
+                               avg4 * job.getOpenness() +
+                               avg5 * job.getNeuroticism()
+               ));
 
-            for (JobAttributes job : getAlljobAttributes()) {
-                double totalScore = (sum1 * job.getFriendliness()) +
-                        (sum2 * job.getConscientiousness()) +
-                        (sum3 * job.getExtraversion()) +
-                        (sum4 * job.getOpenness()) +
-                        (sum5 * job.getNeuroticism());
-                System.out.println("직업명 : " +job.getJobName() + "점수 : " + totalScore);
 
-                results.add((int) totalScore);
-            }
-            return Optional.of(results);
-        }
-        return Optional.empty();
-    }
+        List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
+               .sorted(Map.Entry.<JobAttributes, Double>comparingByValue().reversed())
+               .limit(5)
+               .map(Map.Entry::getKey)
+               .collect(Collectors.toList());
+
+       top5Jobs.forEach(job -> System.out.println("Job Name: " + job.getJobName() + ", Score: " + jobScores.get(job)));
+   }
+    
 }
