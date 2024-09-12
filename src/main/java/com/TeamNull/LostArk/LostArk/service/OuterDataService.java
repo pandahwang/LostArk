@@ -126,7 +126,7 @@ public class OuterDataService {
         outerDataRepository.save(outerData);
     }
 
-    public OuterDataDto read() {
+    public List<OuterDataDto> read() {
         Optional<OuterData> outerData = outerDataRepository.findById(1);
 
         if(outerData.isPresent()){
@@ -161,6 +161,7 @@ public class OuterDataService {
                     .createdAt(result.getCreatedAt())
                     .build();
             return outerDataDto;
+            long total = result.getDestroyer() + result.getBerserker() + result.getSlayer() + result.getGunlancer() +
         }
 
         return null;
