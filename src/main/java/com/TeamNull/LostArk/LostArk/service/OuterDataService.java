@@ -16,7 +16,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -131,37 +135,47 @@ public class OuterDataService {
 
         if(outerData.isPresent()){
             OuterData result = outerData.get();
-            OuterDataDto outerDataDto = OuterDataDto.builder()
-                    .destroyer(result.getDestroyer())
-                    .berserker(result.getBerserker())
-                    .gunlancer(result.getGunlancer())
-                    .slayer(result.getSlayer())
-                    .aeromancer(result.getAeromancer())
-                    .artist(result.getArtist())
-                    .arcanist(result.getArcanist())
-                    .bard(result.getBard())
-                    .sorceress(result.getSorceress())
-                    .summoner(result.getSummoner())
-                    .artillerist(result.getArtillerist())
-                    .deadeye(result.getDeadeye())
-                    .sharpshooter(result.getSharpshooter())
-                    .paladin(result.getPaladin())
-                    .deathblade(result.getDeathblade())
-                    .gunslinger(result.getGunslinger())
-                    .machinist(result.getMachinist())
-                    .reaper(result.getReaper())
-                    .souleater(result.getSouleater())
-                    .shadowhunter(result.getShadowhunter())
-                    .scrapper(result.getScrapper())
-                    .glaivier(result.getGlaivier())
-                    .breaker(result.getBreaker())
-                    .soulfist(result.getSoulfist())
-                    .striker(result.getStriker())
-                    .wardancer(result.getWardancer())
-                    .createdAt(result.getCreatedAt())
-                    .build();
-            return outerDataDto;
+            List<OuterDataDto> resData = new ArrayList<>();
             long total = result.getDestroyer() + result.getBerserker() + result.getSlayer() + result.getGunlancer() +
+                    result.getPaladin() + result.getSoulfist() + result.getWardancer() + result.getBreaker() +
+                    result.getStriker() + result.getScrapper() + result.getGlaivier() + result.getGunslinger() +
+                    result.getDeadeye() + result.getArtillerist() + result.getMachinist() + result.getSharpshooter() +
+                    result.getBard() + result.getSummoner() + result.getSorceress() + result.getArcanist() +
+                    result.getShadowhunter() + result.getReaper() + result.getDeathblade() + result.getSouleater() +
+                    result.getAeromancer() + result.getArtist();
+
+            resData.add(new OuterDataDto("버서커", result.getBerserker(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker.png"));
+            resData.add(new OuterDataDto("디스트로이어", result.getDestroyer(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer.png"));
+            resData.add(new OuterDataDto("워로드", result.getGunlancer(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord.png"));
+            resData.add(new OuterDataDto("홀리나이트", result.getPaladin(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight.png"));
+            resData.add(new OuterDataDto("슬레이어", result.getSlayer(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png"));
+            resData.add(new OuterDataDto("아르카나", result.getArcanist(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana.png"));
+            resData.add(new OuterDataDto("서머너", result.getSummoner(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner.png"));
+            resData.add(new OuterDataDto("바드", result.getBard(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard.png"));
+            resData.add(new OuterDataDto("소서리스", result.getSorceress(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/sorceress.png"));
+            resData.add(new OuterDataDto("배틀마스터", result.getWardancer(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster.png"));
+            resData.add(new OuterDataDto("인파이터", result.getScrapper(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter.png"));
+            resData.add(new OuterDataDto("기공사", result.getSoulfist(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster.png"));
+            resData.add(new OuterDataDto("창술사", result.getGlaivier(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster.png"));
+            resData.add(new OuterDataDto("스트라이커", result.getStriker(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker.png"));
+            resData.add(new OuterDataDto("브레이커", result.getBreaker(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male.png"));
+            resData.add(new OuterDataDto("블레이드", result.getDeathblade(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade.png"));
+            resData.add(new OuterDataDto("데모닉", result.getShadowhunter(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic.png"));
+            resData.add(new OuterDataDto("리퍼", result.getReaper(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper.png"));
+            resData.add(new OuterDataDto("소울이터", result.getSouleater(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater_s.png"));
+            resData.add(new OuterDataDto("호크아이", result.getSharpshooter(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawkeye.png"));
+            resData.add(new OuterDataDto("데빌헌터", result.getDeadeye(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter.png"));
+            resData.add(new OuterDataDto("블래스터", result.getArtillerist(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster.png"));
+            resData.add(new OuterDataDto("기상술사", result.getAeromancer(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist.png"));
+            resData.add(new OuterDataDto("스카우터", result.getMachinist(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter.png"));
+            resData.add(new OuterDataDto("건슬링어", result.getGunslinger(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger.png"));
+            resData.add(new OuterDataDto("도화가", result.getArtist(), total, "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/artist.png"));
+
+            resData = resData.stream()
+                    .sorted(Comparator.comparingDouble(OuterDataDto::getPercentage).reversed())
+                    .collect(Collectors.toList());
+            return resData;
+
         }
 
         return null;

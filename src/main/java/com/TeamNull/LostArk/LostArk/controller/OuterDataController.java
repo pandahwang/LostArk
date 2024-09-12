@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,9 +20,9 @@ public class OuterDataController {
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
 
     @GetMapping("/statistic/alluser")
-    public OuterDataDto alluser() {
-        OuterDataDto outerDataDto = outerDataService.read();
-        return outerDataDto;
+    public List<OuterDataDto> alluser() {
+        List<OuterDataDto> resData = outerDataService.read();
+        return resData;
     }
 
     // 데이터 저장 테스트용 메서드
