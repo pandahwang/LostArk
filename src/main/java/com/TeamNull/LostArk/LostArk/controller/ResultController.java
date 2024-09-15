@@ -25,13 +25,24 @@ public class ResultController {
     private final ResultService resultService;
     private final UserRepository userRepository;
 
-    @PostMapping("/result/{id}")
+    @PostMapping("/results/{id}")
     public void top5 (@PathVariable UUID id){
         resultService.top5(id);
     }
-    @GetMapping("/result/{id}")
-    public ResponseEntity<Result> result(@PathVariable("id") int id) {
-        Optional<Result> result = resultRepository.findById(id);
+
+//    @GetMapping("/results/{id}")
+//    public ResponseEntity<Result> result(@PathVariable("id") int id) {
+//        Optional<Result> result = resultRepository.findById(id);
+//        if(result.isPresent()){
+//            return new ResponseEntity<>(result.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+    // user UUID로 찾기
+    @GetMapping("/results/{id}")
+    public ResponseEntity<Result> result(@PathVariable("id") UUID id) {
+        Optional<Result> result = resultRepository.findByUserId(id);
         if(result.isPresent()){
             return new ResponseEntity<>(result.get(), HttpStatus.OK);
         } else {
