@@ -2,6 +2,7 @@ package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
 import com.TeamNull.LostArk.LostArk.Job.TopFactor;
+import com.TeamNull.LostArk.LostArk.dto.ResultDto;
 import com.TeamNull.LostArk.LostArk.entity.Data;
 import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
@@ -189,15 +190,17 @@ public class ResultService {
 
    }
 
-//   // user UUID로 결과 반환
-//    public ResultDto getResult(UUID id) {
-//        Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
-//        List<JobAttributes> jobAttributesList = getAlljobAttributes();
-//        ResultDto resultDto = new ResultDto();
-//        resultDto.setId(result.getId());
-//        resultDto.setUser(result.getUser());
-//        resultDto.setTopFactor1();
-//
-//        return resultDto;
-//    }
+   // user UUID로 결과 반환
+    public List<ResultDto> getResult(UUID id) {
+        Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
+        List<JobAttributes> jobAttributesList = getAlljobAttributes();
+        List<ResultDto> resultDtoList = new ArrayList<>();
+        for(int i=1; i<=5; i++){
+            resultDtoList.add(new ResultDto(result.getTopFactor1().getJobName(), result.getTopFactor1().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getColor()));
+        }
+
+        return resultDtoList;
+    }
 }

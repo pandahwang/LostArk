@@ -8,12 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResultDto {
+    private String name;
+    private double value;
+    private String icon;
+    private String color;
 
-    private int id;
-    private User user;
-    private TopFactor topFactor1;
-    private TopFactor topFactor2;
-    private TopFactor topFactor3;
-    private TopFactor topFactor4;
-    private TopFactor topFactor5;
+    public ResultDto(String name, double value, String icon, String color) {
+        this.name = name;
+        this.value = value;
+        this.icon = icon;
+        this.color = color;
+    }
 }

@@ -20,19 +20,39 @@ public class Result {
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     private User user;
 
-    @Column(name = "TopFactor1", length = 255)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor1_jobName")),
+            @AttributeOverride(name = "value", column = @Column(name = "TopFactor1_value"))
+    })
     private TopFactor topFactor1;
 
-    @Column(name = "TopFactor2", length = 255)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor2_jobName")),
+            @AttributeOverride(name = "value", column = @Column(name = "TopFactor2_value"))
+    })
     private TopFactor topFactor2;
 
-    @Column(name = "TopFactor3", length = 255)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor3_jobName")),
+            @AttributeOverride(name = "value", column = @Column(name = "TopFactor3_value"))
+    })
     private TopFactor topFactor3;
 
-    @Column(name = "TopFactor4", length = 255)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor4_jobName")),
+            @AttributeOverride(name = "value", column = @Column(name = "TopFactor4_value"))
+    })
     private TopFactor topFactor4;
 
-    @Column(name = "TopFactor5", length = 255)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor5_jobName")),
+            @AttributeOverride(name = "value", column = @Column(name = "TopFactor5_value"))
+    })
     private TopFactor topFactor5;
 
 }
