@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User saveUserd(UserDto userDto){
+    public User saveUser(UserDto userDto){
 
         User user = new User();
         user.setQuestion1(userDto.getQuestion1());
