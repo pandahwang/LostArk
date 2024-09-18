@@ -1,7 +1,7 @@
 package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
-import com.TeamNull.LostArk.LostArk.dto.UserDto;
+import com.TeamNull.LostArk.LostArk.Job.TopFactor;
 import com.TeamNull.LostArk.LostArk.entity.Data;
 import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
@@ -80,21 +80,29 @@ public class ResultService {
                                avg5 * job.getNeuroticism()
                ));
 
-//상위 5개 직업 선별
-       List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
+////상위 5개 직업 선별
+//       List<JobAttributes> top5Jobs = jobScores.entrySet().stream()
+//               .sorted(Map.Entry.<JobAttributes, Double>comparingByValue().reversed())
+//               .limit(5)
+//               .map(Map.Entry::getKey)
+//               .collect(Collectors.toList());
+       List<TopFactor> top5Jobs = jobScores.entrySet().stream()
                .sorted(Map.Entry.<JobAttributes, Double>comparingByValue().reversed())
                .limit(5)
-               .map(Map.Entry::getKey)
+               .map(entry -> new TopFactor(entry.getKey().getJobName(), entry.getValue()))
                .collect(Collectors.toList());
+
+
+
 
        Result result = new Result();
        result.setUser(user);
 //1위 부터 5위까지 저장
-       result.setTopFactor1(top5Jobs.size() > 0 ? top5Jobs.get(0).getJobName() : null);
-       result.setTopFactor2(top5Jobs.size() > 1 ? top5Jobs.get(1).getJobName() : null);
-       result.setTopFactor3(top5Jobs.size() > 2 ? top5Jobs.get(2).getJobName() : null);
-       result.setTopFactor4(top5Jobs.size() > 3 ? top5Jobs.get(3).getJobName() : null);
-       result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4).getJobName() : null);
+       result.setTopFactor1(top5Jobs.size() > 0 ? top5Jobs.get(0) : null);
+       result.setTopFactor2(top5Jobs.size() > 1 ? top5Jobs.get(1) : null);
+       result.setTopFactor3(top5Jobs.size() > 2 ? top5Jobs.get(2) : null);
+       result.setTopFactor4(top5Jobs.size() > 3 ? top5Jobs.get(3) : null);
+       result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4) : null);
 
        resultRepository.save(result);
 
@@ -103,7 +111,7 @@ public class ResultService {
 //저장될때마다 createdAt 갱신
        data.setCreatedAt(Timestamp.from(Instant.now()));
 //1위 직업 카운트 1 증가
-       switch (result.getTopFactor1()) {
+       switch (result.getTopFactor1().getJobName()) {
            case "Berserker":
                data.setBerserker(data.getBerserker() + 1);
                break;
@@ -180,4 +188,16 @@ public class ResultService {
        dataRepository.save(data);
 
    }
+
+//   // user UUID로 결과 반환
+//    public ResultDto getResult(UUID id) {
+//        Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
+//        List<JobAttributes> jobAttributesList = getAlljobAttributes();
+//        ResultDto resultDto = new ResultDto();
+//        resultDto.setId(result.getId());
+//        resultDto.setUser(result.getUser());
+//        resultDto.setTopFactor1();
+//
+//        return resultDto;
+//    }
 }
