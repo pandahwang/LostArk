@@ -33,6 +33,16 @@ public class CommentController {
         Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize());
         Page<Comment> comments = commentRepository.findAll( pageRequest);
 
+        List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
+                .map(comment -> {
+                    CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto();
+                    dto.setName(comment.getName());
+                    dto.setResult(comment.getResult());
+                    dto.setCreatedAt(comment.getCreatedAt());
+                    dto.setContent(comment.getContent());
+                    return dto;
+                })
+                .toList();
 
         int totalPages = comments.getTotalPages();
         int currentPage = comments.getNumber() + 1;
@@ -41,11 +51,11 @@ public class CommentController {
 
         // JSON 응답 구성
         Map<String, Object> response = new HashMap<>();
-        response.put("comments", comments.getContent());  // 댓글 리스트
-        response.put("currentPage", currentPage);         // 현재 페이지 번호
-        response.put("startPage", startPage);             // 시작 페이지 번호
-        response.put("endPage", endPage);                 // 끝 페이지 번호
-        response.put("totalPages", totalPages);           // 전체 페이지 수
+        response.put("comments", responseDtoList);
+        response.put("currentPage", currentPage);
+        response.put("startPage", startPage);
+        response.put("endPage", endPage);
+        response.put("totalPages", totalPages);
 
         return response;
 

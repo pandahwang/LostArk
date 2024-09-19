@@ -17,6 +17,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private int id;
 
     @ManyToOne
@@ -24,6 +25,7 @@ public class Comment {
     private User name;
 
     @Column(name = "Password", length = 255)
+    @JsonIgnore
     private String password;
 
     @Column(name = "CreatedAt")

@@ -20,4 +20,10 @@ public class CommentDto {
     @Data
     public static class CommentResponseDto  {
 
+        private Timestamp createdAt;
+        private String content;
+        private User name;
+        private String result;
+
+    }
 }
