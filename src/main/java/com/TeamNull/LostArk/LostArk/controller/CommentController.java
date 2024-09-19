@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 @RestController
@@ -53,8 +54,13 @@ public class CommentController {
 
 }
         @PostMapping("")
-        public void addComment(@RequestBody CommentDto commentDto) {
-            commentService.commentAdd(commentDto.getContent(), commentDto.getPassword(), commentDto.getUser());
+        public void addComment(@PathVariable UUID id, @RequestBody CommentDto commentDto) {
+            commentService.commentAdd(commentDto.getContent(),
+                                       commentDto.getPassword(),
+                                       commentDto.getName(),
+                                        commentDto.getCreatedAt(),
+                                        commentDto.getResult()
+            );
         }
 
 }
