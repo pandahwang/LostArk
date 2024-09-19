@@ -1,6 +1,7 @@
 package com.TeamNull.LostArk.LostArk.entity;
 
 import com.TeamNull.LostArk.LostArk.Job.TopFactor;
+import com.TeamNull.LostArk.LostArk.Job.TopFactorConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,39 +21,23 @@ public class Result {
     @JoinColumn(name = "UserID", referencedColumnName = "ID", nullable = false)
     private User user;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor1_jobName")),
-            @AttributeOverride(name = "value", column = @Column(name = "TopFactor1_value"))
-    })
+    @Convert(converter = TopFactorConverter.class)
+    @Column(name = "TopFactor1", length = 255)
     private TopFactor topFactor1;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor2_jobName")),
-            @AttributeOverride(name = "value", column = @Column(name = "TopFactor2_value"))
-    })
+    @Convert(converter = TopFactorConverter.class)
+    @Column(name = "TopFactor2", length = 255)
     private TopFactor topFactor2;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor3_jobName")),
-            @AttributeOverride(name = "value", column = @Column(name = "TopFactor3_value"))
-    })
+    @Convert(converter = TopFactorConverter.class)
+    @Column(name = "TopFactor3", length = 255)
     private TopFactor topFactor3;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor4_jobName")),
-            @AttributeOverride(name = "value", column = @Column(name = "TopFactor4_value"))
-    })
+    @Convert(converter = TopFactorConverter.class)
+    @Column(name = "TopFactor4", length = 255)
     private TopFactor topFactor4;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "jobName", column = @Column(name = "TopFactor5_jobName")),
-            @AttributeOverride(name = "value", column = @Column(name = "TopFactor5_value"))
-    })
+    @Convert(converter = TopFactorConverter.class)
+    @Column(name = "TopFactor5", length = 255)
     private TopFactor topFactor5;
-
 }
