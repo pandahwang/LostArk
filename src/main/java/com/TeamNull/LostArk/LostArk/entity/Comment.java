@@ -20,8 +20,6 @@ public class Comment {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "UserID", referencedColumnName = "ID")
-    private User user;
     @JoinColumn(name = "user", referencedColumnName = "ID")
     private User name;
 

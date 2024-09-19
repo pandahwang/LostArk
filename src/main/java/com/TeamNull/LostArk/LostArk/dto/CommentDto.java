@@ -14,8 +14,10 @@ public class CommentDto {
     private Timestamp createdAt;
     private String content;
     private String password;
-    private User user;
     private User name;
     private String result;
+
+    @Data
+    public static class CommentResponseDto  {
 
 }

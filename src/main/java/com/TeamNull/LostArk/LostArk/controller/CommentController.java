@@ -27,17 +27,15 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
 
-    @GetMapping("/{user}/list/{abc}")
-    public Map<String, Object> commentList(@PathVariable Long user, @PathVariable Integer abc, @PageableDefault(size = 5) Pageable pageable) {
+    @GetMapping("/{abc}")
+    public Map<String, Object> commentList(@PathVariable Integer abc, @PageableDefault(size = 5) Pageable pageable) {
 
         Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize());
+        Page<Comment> comments = commentRepository.findAll( pageRequest);
 
 
-        Page<Comment> comments = commentRepository.findByUser(user, pageRequest);
-
-        // 페이지네이션 관련 정보 계산
         int totalPages = comments.getTotalPages();
-        int currentPage = comments.getNumber() + 1;  // 0부터 시작하므로 +1
+        int currentPage = comments.getNumber() + 1;
         int startPage = Math.max(1, currentPage - 2);
         int endPage = Math.min(startPage + 4, totalPages);
 
@@ -49,7 +47,7 @@ public class CommentController {
         response.put("endPage", endPage);                 // 끝 페이지 번호
         response.put("totalPages", totalPages);           // 전체 페이지 수
 
-        return response;  // JSON으로 응답
+        return response;
 
 
 }
