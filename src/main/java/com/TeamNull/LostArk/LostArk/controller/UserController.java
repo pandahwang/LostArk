@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity<UUID> createUser(@RequestBody UserDto userDto) {
 
         // User 객체를 저장
-        User savedUser = userService.saveUserd(userDto);
+        User savedUser = userService.saveUser(userDto);
         //User 객체를 응답으로 반환
         return ResponseEntity.ok(savedUser.getId());
     }

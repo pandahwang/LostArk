@@ -1,6 +1,5 @@
 package com.TeamNull.LostArk.LostArk.service;
 
-
 import com.TeamNull.LostArk.LostArk.dto.UserDto;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
@@ -13,7 +12,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User saveUserd(UserDto userDto){
+    public User saveUser(UserDto userDto){
 
         User user = new User();
         user.setQuestion1(userDto.getQuestion1());
