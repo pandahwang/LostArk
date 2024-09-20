@@ -59,6 +59,9 @@ public class OuterData {
     @Column(name = "Striker")
     private int striker;
 
+    @Column(name = "Breaker")
+    private int breaker;
+
     @Column(name = "Deathblade")
     private int deathblade;
 
@@ -67,6 +70,9 @@ public class OuterData {
 
     @Column(name = "Reaper")
     private int reaper;
+
+    @Column(name = "SoulEater")
+    private int souleater;
 
     @Column(name = "Sharpshooter")
     private int sharpshooter;
@@ -85,6 +91,9 @@ public class OuterData {
 
     @Column(name = "Gunslinger")
     private int gunslinger;
+
+    @Column(name = "Artist")
+    private int artist;
 
     @Column(name = "CreatedAt")
     private Timestamp createdAt;
