@@ -1,8 +1,10 @@
 package com.TeamNull.LostArk.LostArk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -15,20 +17,23 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
+    @JsonIgnore
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "UserID", referencedColumnName = "ID")
-    private User user;
+    @JoinColumn(name = "user", referencedColumnName = "ID")
+    private User name;
 
     @Column(name = "Password", length = 255)
+    @JsonIgnore
     private String password;
 
     @Column(name = "CreatedAt")
+    @CreationTimestamp
     private Timestamp createdAt;
 
     @Column(name = "TopFactorResult", length = 255)
-    private String topFactorResult;
+    private String result;
 
     @Column(name = "Content", columnDefinition = "TEXT")
     private String content;
