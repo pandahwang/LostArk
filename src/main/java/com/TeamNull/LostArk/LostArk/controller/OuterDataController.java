@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 public class OuterDataController {
 
@@ -21,14 +20,14 @@ public class OuterDataController {
 
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
 
-    @GetMapping("/statistic/alluser")
+    @GetMapping("/statistics/alluser")
     public List<OuterDataDto> alluser() {
         List<OuterDataDto> resData = outerDataService.read();
         return resData;
     }
 
     // 데이터 저장 테스트용 메서드
-    @PutMapping("/statistic/alluser")
+    @PutMapping("/statistics/alluser")
         public void createAlluser() throws IOException, ParseException{
         outerDataService.create();
     }

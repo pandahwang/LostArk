@@ -1,5 +1,6 @@
 package com.TeamNull.LostArk.LostArk.dto;
 
+import com.TeamNull.LostArk.LostArk.Job.TopFactor;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResultDto {
+    private String name;
+    private double value;
+    private String icon;
+    private String color;
 
-    private int id;
-    private User user;
-    private String topFactor1;
-    private String topFactor2;
-    private String topFactor3;
-    private String topFactor4;
-    private String topFactor5;
+    public ResultDto(String name, double value, String icon, String color) {
+        this.name = name;
+        this.value = value;
+        this.icon = icon;
+        this.color = color;
+    }
 }
