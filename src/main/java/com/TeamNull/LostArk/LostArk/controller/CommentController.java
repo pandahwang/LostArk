@@ -4,6 +4,7 @@ import com.TeamNull.LostArk.LostArk.dto.CommentDto;
 import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.CommentRepository;
+import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @RestController
@@ -25,6 +23,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+    private final ResultRepository resultRepository;
 
 
     @GetMapping("/{abc}")
@@ -36,7 +35,7 @@ public class CommentController {
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
                 .map(comment -> {
                     CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto();
-                    dto.setUser(comment.getUser());
+                    dto.setUserID(comment.getUser().getId());
                     dto.setTopFactorResult(comment.getTopFactorResult());
                     dto.setCreatedAt(comment.getCreatedAt());
                     dto.setContent(comment.getContent());
@@ -61,16 +60,18 @@ public class CommentController {
 
 
 }
-        @PostMapping("")
-        public void addComment(@PathVariable UUID id, @RequestBody CommentDto commentDto) {
+        @PostMapping("/{id}")
+        public void addComment(@PathVariable UUID id , @RequestBody CommentDto commentDto) {
+
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
-                                       commentDto.getUser(),
-                                        commentDto.getCreatedAt(),
-                                        commentDto.getTopFactorResult(),
-                                        commentDto.getNickname()
+                                       commentDto.getCreatedAt(),
+                                        commentDto.getNickname(),
+                                        id
             );
         }
+
+
 
 }
 
