@@ -14,16 +14,17 @@ public class CommentDto {
     private Timestamp createdAt;
     private String content;
     private String password;
-    private User name;
-    private String result;
+    private User user;
+    private String topFactorResult;
+    private String nickname;
 
     @Data
     public static class CommentResponseDto  {
 
         private Timestamp createdAt;
         private String content;
-        private User name;
-        private String result;
+        private User user;
+        private String topFactorResult;
 
     }
 }

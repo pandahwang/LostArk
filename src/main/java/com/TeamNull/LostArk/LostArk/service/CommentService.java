@@ -26,17 +26,19 @@ public class CommentService {
 
     public void commentAdd( String content,
                             String password,
-                            User name,
+                            User user,
                             Timestamp createdAt,
-                            String result
+                            String topFactorResult,
+                            String nickname
                             )
     {
         Comment comment = new Comment();
-        comment.setName(name);
+        comment.setUser(user);
         comment.setCreatedAt(createdAt);
         comment.setPassword(password);
         comment.setContent(content);
-        comment.setResult(result);
+        comment.setTopFactorResult(topFactorResult);
+        comment.setNickName(nickname);
         commentRepository.save(comment);
     }
 

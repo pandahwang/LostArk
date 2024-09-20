@@ -36,8 +36,8 @@ public class CommentController {
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
                 .map(comment -> {
                     CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto();
-                    dto.setName(comment.getName());
-                    dto.setResult(comment.getResult());
+                    dto.setUser(comment.getUser());
+                    dto.setTopFactorResult(comment.getTopFactorResult());
                     dto.setCreatedAt(comment.getCreatedAt());
                     dto.setContent(comment.getContent());
                     return dto;
@@ -65,9 +65,10 @@ public class CommentController {
         public void addComment(@PathVariable UUID id, @RequestBody CommentDto commentDto) {
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
-                                       commentDto.getName(),
+                                       commentDto.getUser(),
                                         commentDto.getCreatedAt(),
-                                        commentDto.getResult()
+                                        commentDto.getTopFactorResult(),
+                                        commentDto.getNickname()
             );
         }
 
