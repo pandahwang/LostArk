@@ -21,8 +21,8 @@ public class Comment {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "ID")
-    private User name;
+    @JoinColumn(name = "userID", referencedColumnName = "ID")
+    private User user;
 
     @Column(name = "Password", length = 255)
     @JsonIgnore
@@ -33,9 +33,12 @@ public class Comment {
     private Timestamp createdAt;
 
     @Column(name = "TopFactorResult", length = 255)
-    private String result;
+    private String topFactorResult;
 
     @Column(name = "Content", columnDefinition = "TEXT")
     private String content;
+
+    @Column(name="nickname")
+    private String nickName;
 
 }
