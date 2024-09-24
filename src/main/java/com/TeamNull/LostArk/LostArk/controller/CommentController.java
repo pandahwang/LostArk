@@ -4,14 +4,17 @@ import com.TeamNull.LostArk.LostArk.dto.CommentDto;
 import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.CommentRepository;
-import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
+import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.*;
 
@@ -92,7 +95,39 @@ public class CommentController {
         }
     }
 
+    @PutMapping("/update/{userId}/{commentId}")
+    public ResponseEntity<String> commentUpdate(@PathVariable UUID userId, @PathVariable int commentId, @RequestBody(required = false) Comment updatedComment) {
+        if (updatedComment == null) {
+            return new ResponseEntity<>("요청 본문이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
 
+        // userId에 해당하는 사용자가 있는지 확인
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            // commentId에 해당하는 댓글을 찾음
+            Optional<Comment> comment = commentRepository.findById(commentId);
+
+            if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
+                // 해당 사용자가 작성한 댓글이 맞으면 업데이트
+                Comment existingComment = comment.get();
+                existingComment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
+
+                commentRepository.save(existingComment); // 변경된 댓글 저장
+
+                return new ResponseEntity<>("댓글이 성공적으로 업데이트되었습니다.", HttpStatus.OK);
+            } else {
+                // 댓글이 없거나 사용자의 댓글이 아닌 경우
+                return new ResponseEntity<>("해당 사용자가 작성한 댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
+        } else {
+            // 해당 사용자가 없을 때
+            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
 }
+
+
+
 
 

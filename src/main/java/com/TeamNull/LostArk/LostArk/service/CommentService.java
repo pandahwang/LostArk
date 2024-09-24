@@ -39,7 +39,12 @@ public class CommentService {
         String topFactorResult = resultRepository.findByUserId(id)
                 .map(result -> result.getTopFactor1().getJobName())
                 .orElseThrow(() -> new IllegalArgumentException("No result found for user ID: " + id));
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No user found for ID: " + id));
+
         comment.setTopFactorResult(topFactorResult);
+        comment.setUser(user);
         comment.setCreatedAt(createdAt);
         comment.setPassword(password);
         comment.setContent(content);

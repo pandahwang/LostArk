@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
@@ -40,5 +41,9 @@ public class Comment {
 
     @Column(name="nickname")
     private String nickName;
+
+    @Column(name = "updatedAt")
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
 }
