@@ -39,6 +39,7 @@ public class CommentController {
                     dto.setTopFactorResult(comment.getTopFactorResult());
                     dto.setCreatedAt(comment.getCreatedAt());
                     dto.setContent(comment.getContent());
+                    dto.setNickname(comment.getNickName());
                     return dto;
                 })
                 .toList();
