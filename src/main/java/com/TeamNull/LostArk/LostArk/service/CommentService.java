@@ -30,7 +30,6 @@ public class CommentService {
 
     public void commentAdd( String content,
                             String password,
-                            Timestamp createdAt,
                             String nickname,
                             UUID id
                             )
@@ -40,7 +39,6 @@ public class CommentService {
                 .map(result -> result.getTopFactor1().getJobName())
                 .orElseThrow(() -> new IllegalArgumentException("No result found for user ID: " + id));
         comment.setTopFactorResult(topFactorResult);
-        comment.setCreatedAt(createdAt);
         comment.setPassword(password);
         comment.setContent(content);
         comment.setNickName(nickname);

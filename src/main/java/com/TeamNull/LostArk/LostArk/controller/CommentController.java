@@ -66,7 +66,6 @@ public class CommentController {
 
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
-                                       commentDto.getCreatedAt(),
                                         commentDto.getNickname(),
                                         id
             );
