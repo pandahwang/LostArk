@@ -23,8 +23,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
-    private final ResultRepository resultRepository;
-
+    private final UserRepository userRepository;
 
     @GetMapping("/{abc}")
     public Map<String, Object> commentList(@PathVariable Integer abc, @PageableDefault(size = 5) Pageable pageable) {
@@ -71,6 +70,27 @@ public class CommentController {
             );
         }
 
+    @DeleteMapping("/delete/{userId}/{commentId}")
+    public ResponseEntity<String> commentDelete(@PathVariable UUID userId, @PathVariable int commentId) {
+        // userId에 해당하는 사용자가 있는지 확인
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            // commentId에 해당하는 댓글을 찾음
+            Optional<Comment> comment = commentRepository.findById(commentId);
+
+            if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
+                // 해당 사용자가 작성한 댓글이 맞으면 삭제
+                commentRepository.deleteById(commentId);
+                return new ResponseEntity<>("댓글이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+            } else {
+                // 댓글이 없거나 사용자의 댓글이 아닌 경우
+                return new ResponseEntity<>("해당 사용자가 작성한 댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
+        } else {
+            // 해당 사용자가 없을 때
+            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
