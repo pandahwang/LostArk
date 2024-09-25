@@ -1,0 +1,262 @@
+[
+  {
+    "jobName": "Destroyer",
+    "Agreeableness": "3",
+    "conscientiousness": "4",
+    "extraversion": "1",
+    "openness": "2",
+    "neuroticism": "5",
+    "color": "bg-sky-300",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer.png)"
+  },
+  {
+    "jobName": "Berserker",
+    "Agreeableness": "2",
+    "conscientiousness": "4",
+    "extraversion": "2",
+    "openness": "2",
+    "neuroticism": "5",
+    "color": "bg-red-700",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker.png)"
+  },
+  {
+    "jobName": "Slayer",
+    "Agreeableness": "2",
+    "conscientiousness": "3",
+    "extraversion": "2",
+    "openness": "3",
+    "neuroticism": "5",
+    "color": "bg-red-400",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png)"
+  },
+  {
+    "jobName": "Gunlancer",
+    "Agreeableness": "5",
+    "conscientiousness": "4",
+    "extraversion": "4",
+    "openness": "1",
+    "neuroticism": "1",
+    "color": "bg-cyan-200",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord.png)"
+  },
+  {
+    "jobName": "Paladin",
+    "Agreeableness": "3",
+    "conscientiousness": "4",
+    "extraversion": "5",
+    "openness": "1",
+    "neuroticism": "2",
+    "color": "bg-yellow-300",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight.png)"
+  },
+  {
+    "jobName": "Soulfist",
+    "Agreeableness": "2",
+    "conscientiousness": "2",
+    "extraversion": "5",
+    "openness": "3",
+    "neuroticism": "3",
+    "color": "bg-blue-400",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster.png)"
+  },
+  {
+    "jobName": "Wardancer",
+    "Agreeableness": "4",
+    "conscientiousness": "3",
+    "extraversion": "4",
+    "openness": "3",
+    "neuroticism": "1",
+    "color": "bg-amber-500",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster.png)"
+  },
+  {
+    "jobName": "Breaker",
+    "Agreeableness": "2",
+    "conscientiousness": "2",
+    "extraversion": "4",
+    "openness": "4",
+    "neuroticism": "3",
+    "color": "bg-amber-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male.png)"
+  },
+  {
+    "jobName": "Striker",
+    "Agreeableness": "2",
+    "conscientiousness": "2",
+    "extraversion": "4",
+    "openness": "5",
+    "neuroticism": "2",
+    "color": "bg-amber-700",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker.png)"
+  },
+  {
+    "jobName": "Scrapper",
+    "Agreeableness": "3",
+    "conscientiousness": "3",
+    "extraversion": "3",
+    "openness": "3",
+    "neuroticism": "3",
+    "color": "bg-amber-800",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter.png)"
+  },
+  {
+    "jobName": "Glaivier",
+    "Agreeableness": "2",
+    "conscientiousness": "1",
+    "extraversion": "5",
+    "openness": "3",
+    "neuroticism": "4",
+    "color": "bg-red-800",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster.png)"
+  },
+  {
+    "jobName": "Gunslinger",
+    "Agreeableness": "1",
+    "conscientiousness": "3",
+    "extraversion": "2",
+    "openness": "4",
+    "neuroticism": "5",
+    "color": "bg-red-900",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger.png)"
+  },
+  {
+    "jobName": "Deadeye",
+    "Agreeableness": "1",
+    "conscientiousness": "3",
+    "extraversion": "1",
+    "openness": "5",
+    "neuroticism": "5",
+    "color": "bg-cyan-800",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter.png)"
+  },
+  {
+    "jobName": "Artillerist",
+    "Agreeableness": "2",
+    "conscientiousness": "4",
+    "extraversion": "3",
+    "openness": "3",
+    "neuroticism": "3",
+    "color": "bg-cyan-950",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster.png)"
+  },
+  {
+    "jobName": "Machinist",
+    "Agreeableness": "2",
+    "conscientiousness": "4",
+    "extraversion": "4",
+    "openness": "2",
+    "neuroticism": "3",
+    "color": "bg-indigo-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter.png)"
+  },
+  {
+    "jobName": "Sharpshooter",
+    "Agreeableness": "2",
+    "conscientiousness": "3",
+    "extraversion": "3",
+    "openness": "4",
+    "neuroticism": "3",
+    "color": "bg-blue-700",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawkeye.png)"
+  },
+  {
+    "jobName": "Bard",
+    "Agreeableness": "4",
+    "conscientiousness": "5",
+    "extraversion": "4",
+    "openness": "1",
+    "neuroticism": "1",
+    "color": "bg-amber-200",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard.png)"
+  },
+  {
+    "jobName": "Summoner",
+    "Agreeableness": "3",
+    "conscientiousness": "3",
+    "extraversion": "3",
+    "openness": "4",
+    "neuroticism": "2",
+    "color": "bg-blue-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner.png)"
+  },
+  {
+    "jobName": "Sorceress",
+    "Agreeableness": "2",
+    "conscientiousness": "3",
+    "extraversion": "2",
+    "openness": "5",
+    "neuroticism": "3",
+    "color": "bg-rose-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/sorceress.png)"
+  },
+  {
+    "jobName": "Arcanist",
+    "Agreeableness": "2",
+    "conscientiousness": "3",
+    "extraversion": "3",
+    "openness": "5",
+    "neuroticism": "2",
+    "color": "bg-fuchsia-700",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana.png)"
+  },
+  {
+    "jobName": "Shadowhunter",
+    "Agreeableness": "3",
+    "conscientiousness": "3",
+    "extraversion": "2",
+    "openness": "2",
+    "neuroticism": "5",
+    "color": "bg-red-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic.png)"
+  },
+  {
+    "jobName": "Reaper",
+    "Agreeableness": "2",
+    "conscientiousness": "2",
+    "extraversion": "1",
+    "openness": "5",
+    "neuroticism": "5",
+    "color": "bg-green-600",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper.png)"
+  },
+  {
+    "jobName": "Deathblade",
+    "Agreeableness": "2",
+    "conscientiousness": "2",
+    "extraversion": "3",
+    "openness": "4",
+    "neuroticism": "4",
+    "color": "bg-sky-300",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade.png)"
+  },
+  {
+    "jobName": "Souleater",
+    "Agreeableness": "1",
+    "conscientiousness": "1",
+    "extraversion": "5",
+    "openness": "5",
+    "neuroticism": "3",
+    "color": "bg-purple-800",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater_s.png)"
+  },
+  {
+    "jobName": "Aeromancer",
+    "Agreeableness": "4",
+    "conscientiousness": "3",
+    "extraversion": "4",
+    "openness": "2",
+    "neuroticism": "2",
+    "color": "bg-rose-300",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist.png)"
+  },
+  {
+    "jobName": "Artist",
+    "Agreeableness": "4",
+    "conscientiousness": "4",
+    "extraversion": "4",
+    "openness": "2",
+    "neuroticism": "1",
+    "color": "bg-rose-200",
+    "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/artist.png)"
+  }
+]

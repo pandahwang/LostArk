@@ -9,55 +9,65 @@ import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.DataRepository;
 import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ResultService {
 
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
     private final DataRepository dataRepository;
+    private final ObjectMapper objectMapper;
 
-    //직업별 성향치
-    public List<JobAttributes> getAlljobAttributes() {
-        return Arrays.asList(
-                new JobAttributes("Destroyer",3,4,1,2,5, "bg-sky-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer.png"),
-                new JobAttributes("Berserker",2,4,2,2,5, "bg-red-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker.png"),
-                new JobAttributes("Slayer",2,3,2,3,5, "bg-red-400", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png"),
-                new JobAttributes("Gunlancer",5,4,4,1,1, "bg-cyan-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord.png"),
-                new JobAttributes("Paladin",3,4,5,1,2, "bg-yellow-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight.png"),
-                new JobAttributes("Soulfist",2,2,5,3,3, "bg-blue-400", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster.png"),
-                new JobAttributes("Wardancer",4,3,4,3,1, "bg-amber-500", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster.png"),
-                new JobAttributes("Breaker",2,2,4,4,3, "bg-amber-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male.png"),
-                new JobAttributes("Striker",2,2,4,5,2, "bg-amber-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker.png"),
-                new JobAttributes("Scrapper",3,3,3,3,3, "bg-amber-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter.png"),
-                new JobAttributes("Glaivier",2,1,5,3,4, "bg-red-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster.png"),
-                new JobAttributes("Gunslinger",1,3,2,4,5, "bg-red-900", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger.png"),
-                new JobAttributes("Deadeye",1,3,1,5,5, "bg-cyan-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter.png"),
-                new JobAttributes("Artillerist",2,4,3,3,3, "bg-cyan-950", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster.png"),
-                new JobAttributes("Machinist",2,4,4,2,3, "bg-indigo-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter.png"),
-                new JobAttributes("Sharpshooter",2,3,3,4,3, "bg-blue-700" ,"https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawkeye.png"),
-                new JobAttributes("Bard",4,5,4,1,1, "bg-amber-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard.png"),
-                new JobAttributes("Summoner",3,3,3,4,2, "bg-blue-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner.png"),
-                new JobAttributes("Sorceress",2,3,2,5,3, "bg-rose-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/sorceress.png"),
-                new JobAttributes("Arcanist",2,3,3,5,2, "bg-fuchsia-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana.png"),
-                new JobAttributes("Shadowhunter",3,3,2,2,5, "bg-red-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic.png"),
-                new JobAttributes("Reaper",2,2,1,5,5, "bg-green-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper.png"),
-                new JobAttributes("Deathblade",2,2,3,4,4, "bg-sky-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade.png"),
-                new JobAttributes("Souleater",1,1,5,5,3, "bg-purple-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater_s.png"),
-                new JobAttributes("Aeromancer",4,3,4,2,2, "bg-rose-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist.png"),
-                new JobAttributes("Artist",4,4,4,2,1, "bg-rose-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/artist.png")
-        );
+
+    public ResultService(ResultRepository resultRepository, UserRepository userRepository, DataRepository dataRepository, ObjectMapper objectMapper) {
+        this.resultRepository = resultRepository;
+        this.userRepository = userRepository;
+        this.dataRepository = dataRepository;
+        this.objectMapper = objectMapper;
     }
+//    //직업별 성향치
+//    public List<JobAttributes> getAlljobAttributes() {
+//        return Arrays.asList(
+//                new JobAttributes("Destroyer",3,4,1,2,5, "bg-sky-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer.png"),
+//                new JobAttributes("Berserker",2,4,2,2,5, "bg-red-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker.png"),
+//                new JobAttributes("Slayer",2,3,2,3,5, "bg-red-400", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png"),
+//                new JobAttributes("Gunlancer",5,4,4,1,1, "bg-cyan-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord.png"),
+//                new JobAttributes("Paladin",3,4,5,1,2, "bg-yellow-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight.png"),
+//                new JobAttributes("Soulfist",2,2,5,3,3, "bg-blue-400", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster.png"),
+//                new JobAttributes("Wardancer",4,3,4,3,1, "bg-amber-500", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster.png"),
+//                new JobAttributes("Breaker",2,2,4,4,3, "bg-amber-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male.png"),
+//                new JobAttributes("Striker",2,2,4,5,2, "bg-amber-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker.png"),
+//                new JobAttributes("Scrapper",3,3,3,3,3, "bg-amber-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter.png"),
+//                new JobAttributes("Glaivier",2,1,5,3,4, "bg-red-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster.png"),
+//                new JobAttributes("Gunslinger",1,3,2,4,5, "bg-red-900", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger.png"),
+//                new JobAttributes("Deadeye",1,3,1,5,5, "bg-cyan-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter.png"),
+//                new JobAttributes("Artillerist",2,4,3,3,3, "bg-cyan-950", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster.png"),
+//                new JobAttributes("Machinist",2,4,4,2,3, "bg-indigo-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter.png"),
+//                new JobAttributes("Sharpshooter",2,3,3,4,3, "bg-blue-700" ,"https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawkeye.png"),
+//                new JobAttributes("Bard",4,5,4,1,1, "bg-amber-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard.png"),
+//                new JobAttributes("Summoner",3,3,3,4,2, "bg-blue-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner.png"),
+//                new JobAttributes("Sorceress",2,3,2,5,3, "bg-rose-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/sorceress.png"),
+//                new JobAttributes("Arcanist",2,3,3,5,2, "bg-fuchsia-700", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana.png"),
+//                new JobAttributes("Shadowhunter",3,3,2,2,5, "bg-red-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic.png"),
+//                new JobAttributes("Reaper",2,2,1,5,5, "bg-green-600", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper.png"),
+//                new JobAttributes("Deathblade",2,2,3,4,4, "bg-sky-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade.png"),
+//                new JobAttributes("Souleater",1,1,5,5,3, "bg-purple-800", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater_s.png"),
+//                new JobAttributes("Aeromancer",4,3,4,2,2, "bg-rose-300", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist.png"),
+//                new JobAttributes("Artist",4,4,4,2,1, "bg-rose-200", "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/artist.png")
+//        );
+//    }
 
    @Transactional
     public void top5 (UUID id) {
@@ -69,9 +79,10 @@ public class ResultService {
        double avg4 = (user.getQuestion7() + user.getQuestion8()) / 2.0;
        double avg5 = (user.getQuestion9() + user.getQuestion10()) / 2.0;
 
-       List<JobAttributes> results = getAlljobAttributes();
+// Json파일에서 jobattribute 리스트 불러오기
+       List<JobAttributes> jobAttributesList = loadJobAttributesFromJson();
 //각 성향별 점수 책정
-       Map<JobAttributes, Double> jobScores = results.stream()
+       Map<JobAttributes, Double> jobScores = jobAttributesList.stream()
                .collect(Collectors.toMap(
                        job -> job,
                        job -> avg1 * job.getAgreeableness() +
@@ -194,7 +205,7 @@ public class ResultService {
     public List<ResultDto> getResult(UUID id) {
         Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
 
-        List<JobAttributes> jobAttributesList = getAlljobAttributes();
+        List<JobAttributes> jobAttributesList = loadJobAttributesFromJson();
 
         List<ResultDto> resultDtoList = new ArrayList<>();
 
@@ -215,5 +226,14 @@ public class ResultService {
                                         jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor5().getJobName())).findFirst().get().getColor()));
 
         return resultDtoList;
+    }
+
+    private List<JobAttributes> loadJobAttributesFromJson() {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/LostArk.json");
+            return objectMapper.readValue(inputStream, new TypeReference<List<JobAttributes>>() {});
+            } catch (Exception e) {
+            throw new RuntimeException("json 파일에서 불러오기 실패", e);
+        }
     }
 }
