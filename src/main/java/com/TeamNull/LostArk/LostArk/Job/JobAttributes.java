@@ -13,4 +13,6 @@ public class JobAttributes {
     private final int extraversion;
     private final int openness;
     private final int neuroticism;
+    private final String color;
+    private final String icon;
 }
