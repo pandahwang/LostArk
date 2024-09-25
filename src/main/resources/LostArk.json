@@ -1,6 +1,6 @@
 [
   {
-    "jobName": "Destroyer",
+    "jobName": "디스트로이어",
     "Agreeableness": "3",
     "conscientiousness": "4",
     "extraversion": "1",
@@ -10,7 +10,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer.png)"
   },
   {
-    "jobName": "Berserker",
+    "jobName": "버서커",
     "Agreeableness": "2",
     "conscientiousness": "4",
     "extraversion": "2",
@@ -20,7 +20,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker.png)"
   },
   {
-    "jobName": "Slayer",
+    "jobName": "슬레이어",
     "Agreeableness": "2",
     "conscientiousness": "3",
     "extraversion": "2",
@@ -30,7 +30,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png)"
   },
   {
-    "jobName": "Gunlancer",
+    "jobName": "워로드",
     "Agreeableness": "5",
     "conscientiousness": "4",
     "extraversion": "4",
@@ -40,7 +40,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord.png)"
   },
   {
-    "jobName": "Paladin",
+    "jobName": "홀리나이트",
     "Agreeableness": "3",
     "conscientiousness": "4",
     "extraversion": "5",
@@ -50,7 +50,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight.png)"
   },
   {
-    "jobName": "Soulfist",
+    "jobName": "기공사",
     "Agreeableness": "2",
     "conscientiousness": "2",
     "extraversion": "5",
@@ -60,7 +60,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster.png)"
   },
   {
-    "jobName": "Wardancer",
+    "jobName": "배틀마스터",
     "Agreeableness": "4",
     "conscientiousness": "3",
     "extraversion": "4",
@@ -70,7 +70,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster.png)"
   },
   {
-    "jobName": "Breaker",
+    "jobName": "브레이커",
     "Agreeableness": "2",
     "conscientiousness": "2",
     "extraversion": "4",
@@ -80,7 +80,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male.png)"
   },
   {
-    "jobName": "Striker",
+    "jobName": "스트라이커",
     "Agreeableness": "2",
     "conscientiousness": "2",
     "extraversion": "4",
@@ -90,7 +90,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker.png)"
   },
   {
-    "jobName": "Scrapper",
+    "jobName": "인파이터",
     "Agreeableness": "3",
     "conscientiousness": "3",
     "extraversion": "3",
@@ -100,7 +100,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter.png)"
   },
   {
-    "jobName": "Glaivier",
+    "jobName": "창술사",
     "Agreeableness": "2",
     "conscientiousness": "1",
     "extraversion": "5",
@@ -110,7 +110,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster.png)"
   },
   {
-    "jobName": "Gunslinger",
+    "jobName": "건슬링어",
     "Agreeableness": "1",
     "conscientiousness": "3",
     "extraversion": "2",
@@ -120,7 +120,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger.png)"
   },
   {
-    "jobName": "Deadeye",
+    "jobName": "데몬헌터",
     "Agreeableness": "1",
     "conscientiousness": "3",
     "extraversion": "1",
@@ -130,7 +130,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter.png)"
   },
   {
-    "jobName": "Artillerist",
+    "jobName": "블래스터",
     "Agreeableness": "2",
     "conscientiousness": "4",
     "extraversion": "3",
@@ -140,7 +140,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster.png)"
   },
   {
-    "jobName": "Machinist",
+    "jobName": "스카우터",
     "Agreeableness": "2",
     "conscientiousness": "4",
     "extraversion": "4",
@@ -150,7 +150,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter.png)"
   },
   {
-    "jobName": "Sharpshooter",
+    "jobName": "호크아이",
     "Agreeableness": "2",
     "conscientiousness": "3",
     "extraversion": "3",
@@ -160,7 +160,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawkeye.png)"
   },
   {
-    "jobName": "Bard",
+    "jobName": "바드",
     "Agreeableness": "4",
     "conscientiousness": "5",
     "extraversion": "4",
@@ -170,7 +170,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard.png)"
   },
   {
-    "jobName": "Summoner",
+    "jobName": "서머너",
     "Agreeableness": "3",
     "conscientiousness": "3",
     "extraversion": "3",
@@ -180,7 +180,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner.png)"
   },
   {
-    "jobName": "Sorceress",
+    "jobName": "소서리스",
     "Agreeableness": "2",
     "conscientiousness": "3",
     "extraversion": "2",
@@ -190,7 +190,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/sorceress.png)"
   },
   {
-    "jobName": "Arcanist",
+    "jobName": "아르카나",
     "Agreeableness": "2",
     "conscientiousness": "3",
     "extraversion": "3",
@@ -200,7 +200,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana.png)"
   },
   {
-    "jobName": "Shadowhunter",
+    "jobName": "데모닉",
     "Agreeableness": "3",
     "conscientiousness": "3",
     "extraversion": "2",
@@ -210,7 +210,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic.png)"
   },
   {
-    "jobName": "Reaper",
+    "jobName": "리퍼",
     "Agreeableness": "2",
     "conscientiousness": "2",
     "extraversion": "1",
@@ -220,7 +220,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper.png)"
   },
   {
-    "jobName": "Deathblade",
+    "jobName": "블레이드",
     "Agreeableness": "2",
     "conscientiousness": "2",
     "extraversion": "3",
@@ -230,7 +230,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade.png)"
   },
   {
-    "jobName": "Souleater",
+    "jobName": "소울이터",
     "Agreeableness": "1",
     "conscientiousness": "1",
     "extraversion": "5",
@@ -240,7 +240,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater_s.png)"
   },
   {
-    "jobName": "Aeromancer",
+    "jobName": "기상술사",
     "Agreeableness": "4",
     "conscientiousness": "3",
     "extraversion": "4",
@@ -250,7 +250,7 @@
     "icon": "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist.png)"
   },
   {
-    "jobName": "Artist",
+    "jobName": "도화가",
     "Agreeableness": "4",
     "conscientiousness": "4",
     "extraversion": "4",

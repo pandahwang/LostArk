@@ -124,74 +124,83 @@ public class ResultService {
        data.setCreatedAt(Timestamp.from(Instant.now()));
 //1위 직업 카운트 1 증가
        switch (result.getTopFactor1().getJobName()) {
-           case "Berserker":
+           case "버서커":
                data.setBerserker(data.getBerserker() + 1);
                break;
-           case "Destroyer":
+           case "디스트로이어":
                data.setDestroyer(data.getDestroyer() + 1);
                break;
-           case "Gunlancer":
+           case "워로드":
                data.setGunlancer(data.getGunlancer() + 1);
                break;
-           case "Paladin":
+           case "홀리나이트":
                data.setPaladin(data.getPaladin() + 1);
                break;
-           case "Slayer":
+           case "슬레이어":
                data.setSlayer(data.getSlayer() + 1);
                break;
-           case "Arcanist":
+           case "아르카나":
                data.setArcanist(data.getArcanist() + 1);
                break;
-           case "Summoner":
+           case "서머너":
                data.setSummoner(data.getSummoner() + 1);
                break;
-           case "Bard":
+           case "바드":
                data.setBard(data.getBard() + 1);
                break;
-           case "Sorceress":
+           case "소서리스":
                data.setSorceress(data.getSorceress() + 1);
                break;
-           case "Wardancer":
+           case "배틀마스터":
                data.setWardancer(data.getWardancer() + 1);
                break;
-           case "Scrapper":
+           case "인파이터":
                data.setScrapper(data.getScrapper() + 1);
                break;
-           case "Soulfist":
+           case "기공사":
                data.setSoulfist(data.getSoulfist() + 1);
                break;
-           case "Glaivier":
+           case "창술사":
                data.setGlaivier(data.getGlaivier() + 1);
                break;
-           case "Striker":
+           case "스트라이커":
                data.setStriker(data.getStriker() + 1);
                break;
-           case "Deathblade":
+           case "브레이커":
+               data.setBreaker(data.getBreaker() + 1);
+               break;
+           case "블레이드":
                data.setDeathblade(data.getDeathblade() + 1);
                break;
-           case "Shadowhunter":
+           case "데모닉":
                data.setShadowhunter(data.getShadowhunter() + 1);
                break;
-           case "Reaper":
+           case "리퍼":
                data.setReaper(data.getReaper() + 1);
                break;
-           case "Sharpshooter":
+           case "소울이터":
+               data.setSouleater(data.getSouleater() + 1);
+               break;
+           case "호크아이":
                data.setSharpshooter(data.getSharpshooter() + 1);
                break;
-           case "Deadeye":
+           case "데몬헌터":
                data.setDeadeye(data.getDeadeye() + 1);
                break;
-           case "Artillerist":
+           case "블래스터":
                data.setArtillerist(data.getArtillerist() + 1);
                break;
-           case "Aeromancer":
-               data.setAeromancer(data.getAeromancer() + 1);
-               break;
-           case "Machinist":
+           case "스카우터":
                data.setMachinist(data.getMachinist() + 1);
                break;
-           case "Gunslinger":
+           case "건슬링어":
                data.setGunslinger(data.getGunslinger() + 1);
+               break;
+           case "기상술사":
+               data.setAeromancer(data.getAeromancer() + 1);
+               break;
+           case "도화가":
+               data.setArtist(data.getArtist() + 1);
                break;
            default:
                throw new IllegalArgumentException("Unknown job: " + result.getTopFactor1());
