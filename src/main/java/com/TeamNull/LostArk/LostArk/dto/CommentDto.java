@@ -12,13 +12,21 @@ public class CommentDto {
     private String password;
     private String nickname;
     private UUID userId; // User 대신 UUID로 변경
+    private Timestamp updatedAt;
 
     // Jackson이 직렬화/역직렬화를 위해 기본 생성자가 필요합니다.
     public CommentDto() {}
 
-    public CommentDto(int id, Timestamp createdAt, String content, String password, String nickname, UUID userId) {
+    public CommentDto(int id,
+                      Timestamp createdAt,
+                      Timestamp updatedAt,
+                      String content,
+                      String password,
+                      String nickname,
+                      UUID userId) {
         this.id = id;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.content = content;
         this.password = password;
         this.nickname = nickname;
@@ -36,7 +44,11 @@ public class CommentDto {
         // 기본 생성자
         public CommentResponseDto() {}
 
-        public CommentResponseDto(Timestamp createdAt, String content, UUID userID, String topFactorResult, String nickname) {
+        public CommentResponseDto(Timestamp createdAt,
+                                  String content,
+                                  UUID userID,
+                                  String topFactorResult) {
+          
             this.createdAt = createdAt;
             this.content = content;
             this.userID = userID;
