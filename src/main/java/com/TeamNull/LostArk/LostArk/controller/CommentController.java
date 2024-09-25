@@ -74,7 +74,16 @@ public class CommentController {
         }
 
     @DeleteMapping("/delete/{userId}/{commentId}")
-    public ResponseEntity<String> commentDelete(@PathVariable UUID userId, @PathVariable int commentId) {
+    public ResponseEntity<String> commentDelete(@PathVariable UUID userId,
+                                                @PathVariable int commentId,
+                                                @RequestBody Map<String, String> requestBody) {
+        // 요청 본문에서 password 가져오기
+        String password = requestBody.get("password");
+
+        if (password == null || password.isEmpty()) {
+            return new ResponseEntity<>("비밀번호가 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         // userId에 해당하는 사용자가 있는지 확인
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
@@ -82,7 +91,12 @@ public class CommentController {
             Optional<Comment> comment = commentRepository.findById(commentId);
 
             if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
-                // 해당 사용자가 작성한 댓글이 맞으면 삭제
+                // 댓글의 비밀번호가 입력된 비밀번호와 일치하는지 확인
+                if (!comment.get().getPassword().equals(password)) {
+                    return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
+                }
+
+                // 비밀번호가 일치하면 댓글 삭제
                 commentRepository.deleteById(commentId);
                 return new ResponseEntity<>("댓글이 성공적으로 삭제되었습니다.", HttpStatus.OK);
             } else {
@@ -96,9 +110,11 @@ public class CommentController {
     }
 
     @PutMapping("/update/{userId}/{commentId}")
-    public ResponseEntity<String> commentUpdate(@PathVariable UUID userId, @PathVariable int commentId, @RequestBody(required = false) Comment updatedComment) {
-        if (updatedComment == null) {
-            return new ResponseEntity<>("요청 본문이 없습니다.", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> commentUpdate(@PathVariable UUID userId,
+                                                @PathVariable int commentId,
+                                                @RequestBody CommentDto updatedComment) {
+        if (updatedComment == null || updatedComment.getPassword() == null) {
+            return new ResponseEntity<>("요청 본문 또는 비밀번호가 없습니다.", HttpStatus.BAD_REQUEST);
         }
 
         // userId에 해당하는 사용자가 있는지 확인
@@ -109,7 +125,12 @@ public class CommentController {
             Optional<Comment> comment = commentRepository.findById(commentId);
 
             if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
-                // 해당 사용자가 작성한 댓글이 맞으면 업데이트
+                // 댓글의 비밀번호가 입력된 비밀번호와 일치하는지 확인
+                if (!comment.get().getPassword().equals(updatedComment.getPassword())) {
+                    return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
+                }
+
+                // 비밀번호가 일치하면 댓글 업데이트
                 Comment existingComment = comment.get();
                 existingComment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
 
