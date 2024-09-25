@@ -1,6 +1,7 @@
 package com.TeamNull.LostArk.LostArk.controller;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
+import com.TeamNull.LostArk.LostArk.dto.ResultDto;
 import com.TeamNull.LostArk.LostArk.dto.UserDto;
 import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
@@ -41,10 +42,10 @@ public class ResultController {
 //    }
     // user UUID로 찾기
     @GetMapping("/results/{id}")
-    public ResponseEntity<Result> result(@PathVariable("id") UUID id) {
-        Optional<Result> result = resultRepository.findByUserId(id);
-        if(result.isPresent()){
-            return new ResponseEntity<>(result.get(), HttpStatus.OK);
+    public ResponseEntity<List<ResultDto>> result(@PathVariable("id") UUID id) {
+        List<ResultDto> result = resultService.getResult(id);
+        if(result != null){
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

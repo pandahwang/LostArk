@@ -2,6 +2,7 @@ package com.TeamNull.LostArk.LostArk.service;
 
 import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
 import com.TeamNull.LostArk.LostArk.Job.TopFactor;
+import com.TeamNull.LostArk.LostArk.dto.ResultDto;
 import com.TeamNull.LostArk.LostArk.entity.Data;
 import com.TeamNull.LostArk.LostArk.entity.Result;
 import com.TeamNull.LostArk.LostArk.entity.User;
@@ -98,11 +99,11 @@ public class ResultService {
        Result result = new Result();
        result.setUser(user);
 //1위 부터 5위까지 저장
-       result.setTopFactor1(top5Jobs.size() > 0 ? top5Jobs.get(0) : null);
-       result.setTopFactor2(top5Jobs.size() > 1 ? top5Jobs.get(1) : null);
-       result.setTopFactor3(top5Jobs.size() > 2 ? top5Jobs.get(2) : null);
-       result.setTopFactor4(top5Jobs.size() > 3 ? top5Jobs.get(3) : null);
-       result.setTopFactor5(top5Jobs.size() > 4 ? top5Jobs.get(4) : null);
+       result.setTopFactor1(top5Jobs.size() > 0 ? new TopFactor(top5Jobs.get(0).getJobName(), top5Jobs.get(0).getValue()) : null);
+       result.setTopFactor2(top5Jobs.size() > 1 ? new TopFactor(top5Jobs.get(1).getJobName(), top5Jobs.get(1).getValue()) : null);
+       result.setTopFactor3(top5Jobs.size() > 2 ? new TopFactor(top5Jobs.get(2).getJobName(), top5Jobs.get(2).getValue()) : null);
+       result.setTopFactor4(top5Jobs.size() > 3 ? new TopFactor(top5Jobs.get(3).getJobName(), top5Jobs.get(3).getValue()) : null);
+       result.setTopFactor5(top5Jobs.size() > 4 ? new TopFactor(top5Jobs.get(4).getJobName(), top5Jobs.get(4).getValue()) : null);
 
        resultRepository.save(result);
 
@@ -189,15 +190,30 @@ public class ResultService {
 
    }
 
-//   // user UUID로 결과 반환
-//    public ResultDto getResult(UUID id) {
-//        Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
-//        List<JobAttributes> jobAttributesList = getAlljobAttributes();
-//        ResultDto resultDto = new ResultDto();
-//        resultDto.setId(result.getId());
-//        resultDto.setUser(result.getUser());
-//        resultDto.setTopFactor1();
-//
-//        return resultDto;
-//    }
+   // user UUID로 결과 반환
+    public List<ResultDto> getResult(UUID id) {
+        Result result = resultRepository.findByUserId(id).orElseThrow(() -> new IllegalArgumentException("result not found"));
+
+        List<JobAttributes> jobAttributesList = getAlljobAttributes();
+
+        List<ResultDto> resultDtoList = new ArrayList<>();
+
+            resultDtoList.add(new ResultDto(result.getTopFactor1().getJobName(), result.getTopFactor1().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getColor()));
+            resultDtoList.add(new ResultDto(result.getTopFactor2().getJobName(), result.getTopFactor2().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor2().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor2().getJobName())).findFirst().get().getColor()));
+            resultDtoList.add(new ResultDto(result.getTopFactor3().getJobName(), result.getTopFactor3().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor3().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor3().getJobName())).findFirst().get().getColor()));
+            resultDtoList.add(new ResultDto(result.getTopFactor4().getJobName(), result.getTopFactor4().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor4().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor4().getJobName())).findFirst().get().getColor()));
+            resultDtoList.add(new ResultDto(result.getTopFactor5().getJobName(), result.getTopFactor5().getValue(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor5().getJobName())).findFirst().get().getIcon(),
+                                        jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor5().getJobName())).findFirst().get().getColor()));
+
+        return resultDtoList;
+    }
 }
