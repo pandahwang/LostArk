@@ -39,6 +39,7 @@ public class CommentDto {
         private String content;
         private UUID userID;
         private String topFactorResult;
+        private String nickname;
 
         // 기본 생성자
         public CommentResponseDto() {}
@@ -46,11 +47,13 @@ public class CommentDto {
         public CommentResponseDto(Timestamp createdAt,
                                   String content,
                                   UUID userID,
-                                  String topFactorResult) {
+                                  String topFactorResult,
+                                  String nickname) {
             this.createdAt = createdAt;
             this.content = content;
             this.userID = userID;
             this.topFactorResult = topFactorResult;
+            this.nickname = nickname;
         }
     }
 }
