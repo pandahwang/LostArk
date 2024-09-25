@@ -36,11 +36,7 @@ public class CommentController {
 
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
                 .map(comment -> {
-                    CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto();
-                    dto.setUserID(comment.getUser().getId());
-                    dto.setTopFactorResult(comment.getTopFactorResult());
-                    dto.setCreatedAt(comment.getCreatedAt());
-                    dto.setContent(comment.getContent());
+                    CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(comment.getCreatedAt(),comment.getContent(),comment.getUser().getId(), comment.getTopFactorResult());
                     return dto;
                 })
                 .toList();
@@ -67,7 +63,6 @@ public class CommentController {
 
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
-                                       commentDto.getCreatedAt(),
                                         commentDto.getNickname(),
                                         id
             );
