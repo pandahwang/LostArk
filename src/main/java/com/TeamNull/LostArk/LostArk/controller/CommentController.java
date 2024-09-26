@@ -29,19 +29,21 @@ public class CommentController {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    @GetMapping("/{abc}")
+    @GetMapping("/{abc}")   //abc라는 정수를 URL에서 추출합니다.
     public Map<String, Object> commentList(
-            @PathVariable Integer abc,
-            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC)
-            Pageable pageable
+            @PathVariable Integer abc, //추출한 정수를 저장할 변수 만듬
+            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) //페이지의 규칙을 만듬
+            Pageable pageable //만든 규칙을 저장할 변수 생성
     )
     {
 
-        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize());
-        Page<Comment> comments = commentRepository.findAll( pageRequest);
+        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize()); //추출된 정수와 규칙으로 페이지 변수를 만듬
+        Page<Comment> comments = commentRepository.findAll(pageRequest);
+        // commentRepository를 통해 추출된 데이터베이스의 자료를 만든 페이지에 적용 후 변수를 만듬
 
-        List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
-                .map(comment -> {
+        List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()//데이터베이스에서 가져온 자료 중에서 각 페이지에 포함된 댓글 목록을 추출
+                                                                                            //더 정확히는 댓글 content가 아닌 새로만들 댓글 목록이다.
+                .map(comment -> {     // DTO를 통해 원하는 자료(댓글 목록의 자료)를 가진 리스트를 만듬
                     CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(
                             comment.getCreatedAt(),
                             comment.getContent(),
@@ -54,13 +56,14 @@ public class CommentController {
                 })
                 .toList();
 
-        int totalPages = comments.getTotalPages();
+
+        int totalPages = comments.getTotalPages(); //데이터베이스 페이지에 있는 페이지를 이용해 규칙성 정수를 만듬
         int currentPage = comments.getNumber() + 1;
         int startPage = Math.max(1, currentPage - 2);
         int endPage = Math.min(startPage + 4, totalPages);
 
         // JSON 응답 구성
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>(); //맵을 사용해 규칙성 정수와 원하는 자료를 가진 리스트를 추력함
         response.put("comments", responseDtoList);
         response.put("currentPage", currentPage);
         response.put("startPage", startPage);
@@ -73,48 +76,37 @@ public class CommentController {
 }
         @PostMapping("/{userId}")
         public void addComment(@PathVariable UUID userId , @RequestBody CommentDto commentDto) {
-
+            //url로 부터 userId를 추출 하고, @RequestBody를 통해 추출한 body의 자료({}안의 자료)를 commentDto 변수에 적용
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
                                         commentDto.getNickname(),
                                          userId
-            );
+            );  //추출된 userId와 본문 데이터를 서비스 레이어로 전달합니다.
         }
 
     @DeleteMapping("/delete/{userId}/{commentId}")
     public ResponseEntity<String> commentDelete(@PathVariable UUID userId,
-                                                @PathVariable int commentId,
+                                                @PathVariable Integer commentId,
                                                 @RequestBody Map<String, String> requestBody) {
-        // 요청 본문에서 password 가져오기
         String password = requestBody.get("password");
 
         if (password == null || password.isEmpty()) {
-            return new ResponseEntity<>("비밀번호가 없습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("비밀번호가 없습니다.");
         }
 
-        // userId에 해당하는 사용자가 있는지 확인
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            // commentId에 해당하는 댓글을 찾음
-            Optional<Comment> comment = commentRepository.findById(commentId);
-
-            if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
-                // 댓글의 비밀번호가 입력된 비밀번호와 일치하는지 확인
-                if (!comment.get().getPassword().equals(password)) {
-                    return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
-                }
-
-                // 비밀번호가 일치하면 댓글 삭제
-                commentRepository.deleteById(commentId);
-                return new ResponseEntity<>("댓글이 성공적으로 삭제되었습니다.", HttpStatus.OK);
-            } else {
-                // 댓글이 없거나 사용자의 댓글이 아닌 경우
-                return new ResponseEntity<>("해당 사용자가 작성한 댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-            }
-        } else {
-            // 해당 사용자가 없을 때
-            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
+        return userRepository.findById(userId)
+                .map(user -> commentRepository.findById(commentId)
+                        .filter(comment -> comment.getUser().getId().equals(userId))
+                        .filter(comment -> comment.getPassword().equals(password))
+                        .map(comment -> {
+                            commentRepository.deleteById(commentId);
+                            return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다");
+                        })
+                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다"))
+                )
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("해당 사용자를 찾을 수 없습니다."));
     }
 
     @PutMapping("/update/{userId}/{commentId}")
@@ -122,37 +114,21 @@ public class CommentController {
                                                 @PathVariable int commentId,
                                                 @RequestBody CommentDto updatedComment) {
         if (updatedComment == null || updatedComment.getPassword() == null) {
-            return new ResponseEntity<>("요청 본문 또는 비밀번호가 없습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("요청 본문 또는 비밀번호가 없습니다.");
         }
 
-        // userId에 해당하는 사용자가 있는지 확인
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-            // commentId에 해당하는 댓글을 찾음
-            Optional<Comment> comment = commentRepository.findById(commentId);
-
-            if (comment.isPresent() && comment.get().getUser().getId().equals(userId)) {
-                // 댓글의 비밀번호가 입력된 비밀번호와 일치하는지 확인
-                if (!comment.get().getPassword().equals(updatedComment.getPassword())) {
-                    return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
-                }
-
-                // 비밀번호가 일치하면 댓글 업데이트
-                Comment existingComment = comment.get();
-                existingComment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
-
-                commentRepository.save(existingComment); // 변경된 댓글 저장
-
-                return new ResponseEntity<>("댓글이 성공적으로 업데이트되었습니다.", HttpStatus.OK);
-            } else {
-                // 댓글이 없거나 사용자의 댓글이 아닌 경우
-                return new ResponseEntity<>("해당 사용자가 작성한 댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-            }
-        } else {
-            // 해당 사용자가 없을 때
-            return new ResponseEntity<>("해당 사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
+        return userRepository.findById(userId)
+                .flatMap(user -> commentRepository.findById(commentId)
+                        .filter(comment -> comment.getUser().getId().equals(userId)) // 해당 유저의 댓글인지 확인
+                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword())) // 비밀번호 확인
+                        .map(comment -> {
+                            comment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
+                            commentRepository.save(comment); // 변경된 댓글 저장
+                            return ResponseEntity.ok("댓글이 성공적으로 업데이트되었습니다.");
+                        })
+                )
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
     }
 }
 
