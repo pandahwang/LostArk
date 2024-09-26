@@ -184,7 +184,7 @@ public class ResultService {
            case "호크아이":
                data.setSharpshooter(data.getSharpshooter() + 1);
                break;
-           case "데몬헌터":
+           case "데빌헌터":
                data.setDeadeye(data.getDeadeye() + 1);
                break;
            case "블래스터":
@@ -221,6 +221,7 @@ public class ResultService {
             resultDtoList.add(new ResultDto(result.getTopFactor1().getJobName(), result.getTopFactor1().getValue(),
                                         jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getIcon(),
                                         jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor1().getJobName())).findFirst().get().getColor()));
+        System.out.println(resultDtoList.toString());
             resultDtoList.add(new ResultDto(result.getTopFactor2().getJobName(), result.getTopFactor2().getValue(),
                                         jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor2().getJobName())).findFirst().get().getIcon(),
                                         jobAttributesList.stream().filter(job -> job.getJobName().equals(result.getTopFactor2().getJobName())).findFirst().get().getColor()));
