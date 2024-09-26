@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +30,26 @@ public class CommentController {
     private final UserRepository userRepository;
 
     @GetMapping("/{abc}")
-    public Map<String, Object> commentList(@PathVariable Integer abc, @PageableDefault(size = 5) Pageable pageable) {
+    public Map<String, Object> commentList(
+            @PathVariable Integer abc,
+            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable
+    )
+    {
 
         Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize());
         Page<Comment> comments = commentRepository.findAll( pageRequest);
 
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
                 .map(comment -> {
-                    CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(comment.getCreatedAt(),comment.getContent(),comment.getUser().getId(), comment.getTopFactorResult());
+                    CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(
+                            comment.getCreatedAt(),
+                            comment.getContent(),
+                            comment.getUser().getId(),
+                            comment.getTopFactorResult(),
+                            comment.getNickName()
+                    );
+
                     return dto;
                 })
                 .toList();
@@ -56,15 +69,15 @@ public class CommentController {
 
         return response;
 
+
 }
- 
-        @PostMapping("/{id}")
-        public void addComment(@PathVariable UUID id , @RequestBody CommentDto commentDto) {
+        @PostMapping("/{userId}")
+        public void addComment(@PathVariable UUID userId , @RequestBody CommentDto commentDto) {
 
             commentService.commentAdd(commentDto.getContent(),
                                        commentDto.getPassword(),
                                         commentDto.getNickname(),
-                                        id
+                                         userId
             );
         }
 

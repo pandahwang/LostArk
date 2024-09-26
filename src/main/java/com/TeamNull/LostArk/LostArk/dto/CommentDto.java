@@ -47,14 +47,13 @@ public class CommentDto {
         public CommentResponseDto(Timestamp createdAt,
                                   String content,
                                   UUID userID,
-                                  String topFactorResult) {
-          
+                                  String topFactorResult,
+                                  String nickname) {
             this.createdAt = createdAt;
             this.content = content;
             this.userID = userID;
             this.topFactorResult = topFactorResult;
             this.nickname = nickname;
-
         }
     }
 }
