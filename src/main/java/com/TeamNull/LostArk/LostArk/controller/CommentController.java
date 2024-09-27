@@ -32,12 +32,12 @@ public class CommentController {
     @GetMapping("/{abc}")   //abc라는 정수를 URL에서 추출합니다.
     public Map<String, Object> commentList(
             @PathVariable Integer abc, //추출한 정수를 저장할 변수 만듬
-            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.ASC) //페이지의 규칙을 만듬
+            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) //페이지의 규칙을 만듬
             Pageable pageable //만든 규칙을 저장할 변수 생성
     )
     {
 
-        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize()); //추출된 정수와 규칙으로 페이지 변수를 만듬
+        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize(),pageable.getSort()); //추출된 정수와 규칙으로 페이지 변수를 만듬
         Page<Comment> comments = commentRepository.findAll(pageRequest);
         // commentRepository를 통해 추출된 데이터베이스의 자료를 만든 페이지에 적용 후 변수를 만듬
 
