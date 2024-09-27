@@ -32,7 +32,7 @@ public class CommentController {
     @GetMapping("/{abc}")   //abc라는 정수를 URL에서 추출합니다.
     public Map<String, Object> commentList(
             @PathVariable Integer abc, //추출한 정수를 저장할 변수 만듬
-            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) //페이지의 규칙을 만듬
+            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.ASC) //페이지의 규칙을 만듬
             Pageable pageable //만든 규칙을 저장할 변수 생성
     )
     {
@@ -119,11 +119,11 @@ public class CommentController {
 
         return userRepository.findById(userId)
                 .flatMap(user -> commentRepository.findById(commentId)
-                        .filter(comment -> comment.getUser().getId().equals(userId)) // 해당 유저의 댓글인지 확인
-                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword())) // 비밀번호 확인
+                        .filter(comment -> comment.getUser().getId().equals(userId))
+                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword()))
                         .map(comment -> {
-                            comment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
-                            commentRepository.save(comment); // 변경된 댓글 저장
+                            comment.setContent(updatedComment.getContent());
+                            commentRepository.save(comment);
                             return ResponseEntity.ok("댓글이 성공적으로 업데이트되었습니다.");
                         })
                 )
