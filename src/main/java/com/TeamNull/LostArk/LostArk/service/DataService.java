@@ -1,17 +1,18 @@
 package com.TeamNull.LostArk.LostArk.service;
 
+import com.TeamNull.LostArk.LostArk.Job.JobAttributes;
 import com.TeamNull.LostArk.LostArk.dto.DataDto;
-import com.TeamNull.LostArk.LostArk.dto.OuterDataDto;
 import com.TeamNull.LostArk.LostArk.entity.Data;
 import com.TeamNull.LostArk.LostArk.repository.DataRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +20,18 @@ import java.util.stream.Collectors;
 public class DataService {
 
     private final DataRepository dataRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
+    // json 파일을 읽어와서 DB에 저장하는 메소드
+    private Map<String, JobAttributes> loadJobAttributesFromJson() {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/LostArk.json");
+            return objectMapper.readValue(inputStream, new TypeReference<Map<String,JobAttributes>>() {});
+        } catch (Exception e) {
+            throw new RuntimeException("json 파일에서 불러오기 실패", e);
+        }
+    }
+    private final Map<String, JobAttributes> jobAttributesMap = loadJobAttributesFromJson();
 
 //    public DataDto findById(Integer id) {
         public List<DataDto> findById(int id) {
