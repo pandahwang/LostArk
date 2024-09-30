@@ -45,6 +45,7 @@ public class CommentController {
                                                                                             //더 정확히는 댓글 content가 아닌 새로만들 댓글 목록이다.
                 .map(comment -> {     // DTO를 통해 원하는 자료(댓글 목록의 자료)를 가진 리스트를 만듬
                     CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(
+                            comment.getId(),
                             comment.getCreatedAt(),
                             comment.getContent(),
                             comment.getUser().getId(),
@@ -119,11 +120,11 @@ public class CommentController {
 
         return userRepository.findById(userId)
                 .flatMap(user -> commentRepository.findById(commentId)
-                        .filter(comment -> comment.getUser().getId().equals(userId))
-                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword()))
+                        .filter(comment -> comment.getUser().getId().equals(userId)) // 해당 유저의 댓글인지 확인
+                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword())) // 비밀번호 확인
                         .map(comment -> {
-                            comment.setContent(updatedComment.getContent());
-                            commentRepository.save(comment);
+                            comment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
+                            commentRepository.save(comment); // 변경된 댓글 저장
                             return ResponseEntity.ok("댓글이 성공적으로 업데이트되었습니다.");
                         })
                 )
