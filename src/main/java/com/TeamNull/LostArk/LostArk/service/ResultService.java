@@ -133,7 +133,6 @@ public class ResultService {
                 Method getTopFactorMethod = result.getClass().getMethod("getTopFactor" + i);
                 TopFactor topFactor = (TopFactor) getTopFactorMethod.invoke(result);
                 String jobName = topFactor.getJobName();
-                System.out.println("topFactor:" + topFactor.getJobName());
                 if (topFactor != null) {
                     String key = jobAttributesMap.entrySet().stream()
                             .filter(entry -> entry.getValue().getJobName().equals(jobName))
@@ -141,7 +140,6 @@ public class ResultService {
                             .findFirst()
                             .orElse(null);
                     JobAttributes jobAttribute = jobAttributesMap.get(key);
-                    System.out.println("jobAttributes:"+jobAttribute.getJobName());
                     if (jobAttribute != null) {
                         resultDtoList.add(new ResultDto(topFactor.getJobName(), topFactor.getValue(),
                                 jobAttribute.getIcon(), jobAttribute.getColor()));
