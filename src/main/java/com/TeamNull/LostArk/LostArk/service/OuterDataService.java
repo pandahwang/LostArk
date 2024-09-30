@@ -27,7 +27,22 @@ import java.util.stream.Collectors;
 public class OuterDataService {
 
     private final OuterDataRepository outerDataRepository;
+    private final ObjectMapper objectMapper;
 
+    // json 파일을 읽어와서 DB에 저장하는 메소드
+    private Map<String, JobAttributes> loadJobAttributesFromJson() {
+        try {
+            InputStream inputStream = getClass().getResourceAsStream("/LostArk.json");
+            return objectMapper.readValue(inputStream, new TypeReference<Map<String,JobAttributes>>() {});
+        } catch (Exception e) {
+            throw new RuntimeException("json 파일에서 불러오기 실패", e);
+        }
+    }
+
+    private final Map<String, JobAttributes> jobAttributesList = loadJobAttributesFromJson();
+
+
+    // 매일 00시에 실행
     @Scheduled(cron = "0 0 0 * * *")
     public void update() throws IOException, ParseException {
         create();
