@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class OuterDataService {
 
     private final OuterDataRepository outerDataRepository;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     // json 파일을 읽어와서 DB에 저장하는 메소드
     private Map<String, JobAttributes> loadJobAttributesFromJson() {
@@ -43,7 +43,7 @@ public class OuterDataService {
         }
     }
 
-    private final Map<String, JobAttributes> jobAttributesList = loadJobAttributesFromJson();
+    private final Map<String, JobAttributes> jobAttributesMap = loadJobAttributesFromJson();
 
 
     // 매일 00시에 실행
@@ -151,14 +151,14 @@ public class OuterDataService {
 
     public List<OuterDataDto> read() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Optional<OuterData> outerData = outerDataRepository.findById(1);
-        List<String> jobNames = new ArrayList<>(jobAttributesList.keySet());
+        List<String> jobNames = new ArrayList<>(jobAttributesMap.keySet());
 
         if(outerData.isPresent()){
             OuterData result = outerData.get();
             List<OuterDataDto> resData = new ArrayList<>();
             for(String jobName : jobNames){
                 String methodName = "get" + jobName.substring(0, 1).toUpperCase() + jobName.substring(1);
-                JobAttributes jobAttributes = jobAttributesList.get(jobName);
+                JobAttributes jobAttributes = jobAttributesMap.get(jobName);
                 try {
                     Method method = result.getClass().getMethod(methodName);
                     int value = (int) method.invoke(result);
