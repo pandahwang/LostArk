@@ -35,6 +35,7 @@ public class CommentDto {
 
     @Data
     public static class CommentResponseDto  {
+        private int id;
         private Timestamp createdAt;
         private String content;
         private UUID userID;
@@ -44,11 +45,13 @@ public class CommentDto {
         // 기본 생성자
         public CommentResponseDto() {}
 
-        public CommentResponseDto(Timestamp createdAt,
+        public CommentResponseDto(int id,
+                                  Timestamp createdAt,
                                   String content,
                                   UUID userID,
                                   String topFactorResult,
                                   String nickname) {
+            this.id = id;
             this.createdAt = createdAt;
             this.content = content;
             this.userID = userID;
