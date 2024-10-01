@@ -11,13 +11,12 @@ import java.sql.Timestamp;
 @Setter
 public class OuterDataDto {
     private String name;
-    private double percentage;
+    private int value;
     private String icon;
 
-    public OuterDataDto(String name, int value , Long total, String icon) {
-        double percentage =  (double) value / total * 100;
+    public OuterDataDto(String name, int value, String icon) {
         this.name = name;
-        this.percentage = (double) (Math.round(percentage * 100) / 100.0);
+        this.value = value;
         this.icon = icon;
     }
 }
