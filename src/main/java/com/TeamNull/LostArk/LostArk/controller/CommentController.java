@@ -32,17 +32,16 @@ public class CommentController {
     @GetMapping("/{abc}")   //abc라는 정수를 URL에서 추출합니다.
     public Map<String, Object> commentList(
             @PathVariable Integer abc, //추출한 정수를 저장할 변수 만듬
-            @PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) //페이지의 규칙을 만듬
+            @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) //페이지의 규칙을 만듬
             Pageable pageable //만든 규칙을 저장할 변수 생성
-    )
-    {
+    ) {
 
-        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize(),pageable.getSort()); //추출된 정수와 규칙으로 페이지 변수를 만듬
+        Pageable pageRequest = PageRequest.of(abc - 1, pageable.getPageSize(), pageable.getSort()); //추출된 정수와 규칙으로 페이지 변수를 만듬
         Page<Comment> comments = commentRepository.findAll(pageRequest);
         // commentRepository를 통해 추출된 데이터베이스의 자료를 만든 페이지에 적용 후 변수를 만듬
 
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()//데이터베이스에서 가져온 자료 중에서 각 페이지에 포함된 댓글 목록을 추출
-                                                                                            //더 정확히는 댓글 content가 아닌 새로만들 댓글 목록이다.
+                //더 정확히는 댓글 content가 아닌 새로만들 댓글 목록이다.
                 .map(comment -> {     // DTO를 통해 원하는 자료(댓글 목록의 자료)를 가진 리스트를 만듬
                     CommentDto.CommentResponseDto dto = new CommentDto.CommentResponseDto(
                             comment.getId(),
@@ -74,40 +73,35 @@ public class CommentController {
         return response;
 
 
-}
-        @PostMapping("/{userId}")
-        public void addComment(@PathVariable UUID userId , @RequestBody CommentDto commentDto) {
-            //url로 부터 userId를 추출 하고, @RequestBody를 통해 추출한 body의 자료({}안의 자료)를 commentDto 변수에 적용
-            commentService.commentAdd(commentDto.getContent(),
-                                       commentDto.getPassword(),
-                                        commentDto.getNickname(),
-                                         userId
-            );  //추출된 userId와 본문 데이터를 서비스 레이어로 전달합니다.
-        }
+    }
+
+    @PostMapping("/{userId}")
+    public void addComment(@PathVariable UUID userId, @RequestBody CommentDto commentDto) {
+        //url로 부터 userId를 추출 하고, @RequestBody를 통해 추출한 body의 자료({}안의 자료)를 commentDto 변수에 적용
+        commentService.commentAdd(commentDto.getContent(),
+                commentDto.getPassword(),
+                commentDto.getNickname(),
+                userId
+        );  //추출된 userId와 본문 데이터를 서비스 레이어로 전달합니다.
+    }
 
     @DeleteMapping("/delete/{userId}/{commentId}")
     public ResponseEntity<String> commentDelete(@PathVariable UUID userId,
                                                 @PathVariable Integer commentId,
-                                                @RequestBody Map<String, String> requestBody) {
-        String password = requestBody.get("password");
+                                                @RequestBody CommentDto dropComment) {
 
-        if (password == null || password.isEmpty()) {
+        if (dropComment == null || dropComment.getPassword().isEmpty()) {
             return ResponseEntity.badRequest().body("비밀번호가 없습니다.");
         }
 
-        return userRepository.findById(userId)
-                .map(user -> commentRepository.findById(commentId)
-                        .filter(comment -> comment.getUser().getId().equals(userId))
-                        .filter(comment -> comment.getPassword().equals(password))
-                        .map(comment -> {
-                            commentRepository.deleteById(commentId);
-                            return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다");
-                        })
-                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다"))
-                )
+        return commentRepository.findByUserIdAndId(userId, commentId)
+                .filter(comment -> comment.getPassword().equals(dropComment.getPassword()))
+                .map(comment -> {
+                    commentRepository.deleteById(commentId);
+                    return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다");
+                })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("해당 사용자를 찾을 수 없습니다."));
+                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
     }
 
     @PutMapping("/update/{userId}/{commentId}")
@@ -118,17 +112,14 @@ public class CommentController {
             return ResponseEntity.badRequest().body("요청 본문 또는 비밀번호가 없습니다.");
         }
 
-        return userRepository.findById(userId)
-                .flatMap(user -> commentRepository.findById(commentId)
-                        .filter(comment -> comment.getUser().getId().equals(userId)) // 해당 유저의 댓글인지 확인
-                        .filter(comment -> comment.getPassword().equals(updatedComment.getPassword())) // 비밀번호 확인
-                        .map(comment -> {
-                            comment.setContent(updatedComment.getContent()); // 댓글 내용 업데이트
-                            commentRepository.save(comment); // 변경된 댓글 저장
-                            return ResponseEntity.ok("댓글이 성공적으로 업데이트되었습니다.");
-                        })
-                )
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return commentRepository.findByUserIdAndId(userId, commentId)
+                .filter(comment -> comment.getPassword().equals(updatedComment.getPassword()))
+                .map(comment -> {
+                    comment.setContent(updatedComment.getContent());
+                    commentRepository.save(comment);
+                    return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
+
+                }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
     }
 }
