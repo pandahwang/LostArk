@@ -53,6 +53,38 @@ public class CommentService {
         commentRepository.save(comment);//설정이 완료된 Comment 객체를 데이터베이스에 저장합니다.
     }
 
+    public ResponseEntity<String> removal(UUID userId,
+                        Integer commentId,
+                        String password){
+        if (password == null || password.isEmpty()) {
+            return  ResponseEntity.badRequest().body("비밀번호가 없습니다.");
+        }
 
+      return commentRepository.findByUserIdAndId(userId, commentId)
+                .filter(comment -> comment.getPassword().equals(password))
+                .map(comment -> {
+                    commentRepository.deleteById(commentId);
+                    return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다");
+                }).orElseGet(()->
+        ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
+    }
+
+
+    public ResponseEntity<String> edition(UUID userId, Integer commentId, String password, String Content)
+    {
+        if (password == null || password.isEmpty()) {
+            return   ResponseEntity.badRequest().body("요청 본문 또는 비밀번호가 없습니다.");
+        }
+        return commentRepository.findByUserIdAndId(userId, commentId)
+                .filter(comment -> comment.getPassword().equals(password))
+                .map(comment -> {
+                    comment.setContent(Content);
+                    commentRepository.save(comment);
+                    return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
+
+                }).orElseGet(()->  ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
+    }
 }
 
