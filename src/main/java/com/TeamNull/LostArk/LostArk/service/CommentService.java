@@ -1,6 +1,7 @@
 package com.TeamNull.LostArk.LostArk.service;
 
 
+import com.TeamNull.LostArk.LostArk.dto.CommentDto;
 import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.CommentRepository;
@@ -8,11 +9,20 @@ import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
-
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +32,36 @@ public class CommentService {
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
 
+    public Map<String, Object> getComments(int page, Pageable pageable) {
+        Pageable pageRequest = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
+        Page<Comment> comments = commentRepository.findAll(pageRequest);
 
+        List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
+                .map(comment -> new CommentDto.CommentResponseDto(
+                        comment.getId(),
+                        comment.getCreatedAt(),
+                        comment.getPassword(),
+                        comment.getUser().getId(),
+                        comment.getTopFactorResult(),
+                        comment.getNickName()
+                )).toList();
 
-    public void commentAdd( String content,
+        int totalPage = comments.getTotalPages();
+        int currentPage = comments.getNumber() + 1;
+        int startPage = Math.max(1, currentPage - 2);
+        int endPage = Math.min(totalPage, startPage + 4);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("comments", responseDtoList);
+        response.put("TOTALPAGE", totalPage);
+        response.put("CURRENTPAGE", currentPage);
+        response.put("STARTPAGE", startPage);
+        response.put("ENDPAGE", endPage);
+
+        return response;
+    }
+
+    public void creation( String content,
                             String password,
                             String nickname,
                             UUID userId
