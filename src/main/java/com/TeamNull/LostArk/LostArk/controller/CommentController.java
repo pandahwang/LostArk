@@ -76,13 +76,13 @@ public class CommentController {
     }
 
     @PostMapping("/{userId}")
-    public void addComment(@PathVariable UUID userId, @RequestBody CommentDto commentDto) {
-        //url로 부터 userId를 추출 하고, @RequestBody를 통해 추출한 body의 자료({}안의 자료)를 commentDto 변수에 적용
-        commentService.commentAdd(commentDto.getContent(),
+    public void addComment(@PathVariable UUID userId, @RequestBody CommentDto commentDto)
+    {
+        commentService.creation(commentDto.getContent(),
                 commentDto.getPassword(),
                 commentDto.getNickname(),
                 userId
-        );  //추출된 userId와 본문 데이터를 서비스 레이어로 전달합니다.
+        );
     }
 
     @DeleteMapping("/delete/{userId}/{commentId}")
