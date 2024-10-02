@@ -88,39 +88,17 @@ public class CommentController {
     @DeleteMapping("/delete/{userId}/{commentId}")
     public ResponseEntity<String> commentDelete(@PathVariable UUID userId,
                                                 @PathVariable Integer commentId,
-                                                @RequestBody CommentDto dropComment) {
-
-        if (dropComment == null || dropComment.getPassword().isEmpty()) {
-            return ResponseEntity.badRequest().body("비밀번호가 없습니다.");
-        }
-
-        return commentRepository.findByUserIdAndId(userId, commentId)
-                .filter(comment -> comment.getPassword().equals(dropComment.getPassword()))
-                .map(comment -> {
-                    commentRepository.deleteById(commentId);
-                    return ResponseEntity.ok("댓글이 성공적으로 삭제되었습니다");
-                })
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
+                                                @RequestBody CommentDto dropComment)
+    {
+       return commentService.removal(userId,commentId,dropComment.getPassword());
     }
 
     @PutMapping("/update/{userId}/{commentId}")
     public ResponseEntity<String> commentUpdate(@PathVariable UUID userId,
-                                                @PathVariable int commentId,
-                                                @RequestBody CommentDto updatedComment) {
-        if (updatedComment == null || updatedComment.getPassword() == null) {
-            return ResponseEntity.badRequest().body("요청 본문 또는 비밀번호가 없습니다.");
-        }
-
-        return commentRepository.findByUserIdAndId(userId, commentId)
-                .filter(comment -> comment.getPassword().equals(updatedComment.getPassword()))
-                .map(comment -> {
-                    comment.setContent(updatedComment.getContent());
-                    commentRepository.save(comment);
-                    return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
-
-                }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
+                                        @PathVariable int commentId,
+                                        @RequestBody CommentDto updatedComment)
+    {
+       return commentService.edition(userId,commentId,updatedComment.getPassword(),updatedComment.getContent());
     }
 }
 
