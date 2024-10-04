@@ -22,7 +22,7 @@ public class CommentController {
 
 
     @GetMapping("/{abc}")
-    public Map<String, Object> commentAdd(@PathVariable Integer abc,
+    public Map<String, Object> commentPage(@PathVariable Integer abc,
                                           @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         return commentService.getComments(abc, pageable);
@@ -31,7 +31,7 @@ public class CommentController {
     @PostMapping("/{userID}")
     public void addComment(@PathVariable("userID") UUID userID, @RequestBody CommentDto commentDto)
     {
-        commentService.creation(commentDto.getContent(),
+        commentService.getAddComment(commentDto.getContent(),
                 commentDto.getPassword(),
                 commentDto.getNickname(),
                 userID
@@ -43,15 +43,16 @@ public class CommentController {
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
     {
-       return commentService.removal(userID,commentId,dropComment.getPassword());
+       return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
     }
 
     @PutMapping("/update/{userID}/{commentId}")
     public ResponseEntity<String> commentUpdate(@PathVariable("userID") UUID userID,
                                                 @PathVariable int commentId,
                                                 @RequestBody CommentDto updatedComment) {
-        return commentService.edition(userID, commentId, updatedComment.getPassword(), updatedComment.getContent());
+        return commentService.getCommentUpdate(userID, commentId, updatedComment.getPassword(), updatedComment.getContent());
     }
+
 }
 
 

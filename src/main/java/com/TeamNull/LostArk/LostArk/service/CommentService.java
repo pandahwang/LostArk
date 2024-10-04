@@ -35,9 +35,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     public Map<String, Object> getComments(int page,@PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Pageable pageRequest = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
-        Page<Comment> comments = commentRepository.findAll(pageRequest);
-
+        Page<Comment> comments = commentRepository.findAll(PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort()));
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
                 .map(comment -> new CommentDto.CommentResponseDto(
                         comment.getId(),
@@ -63,7 +61,7 @@ public class CommentService {
         return response;
     }
 
-    public void creation( String content,
+    public void getAddComment( String content,
                             String password,
                             String nickname,
                             UUID userID
@@ -87,7 +85,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public ResponseEntity<String> removal(UUID userID,
+    public ResponseEntity<String> getCommentDelete(UUID userID,
                         Integer commentId,
                         String password){
         if (password == null || password.isEmpty()) {
@@ -105,7 +103,7 @@ public class CommentService {
     }
 
 
-    public ResponseEntity<String> edition(UUID userID, Integer commentId, String password, String content) {
+    public ResponseEntity<String> getCommentUpdate(UUID userID, Integer commentId, String password, String content) {
         if (password == null || password.isEmpty()) {
             return ResponseEntity.badRequest().body("비밀번호를 입력해주세요.");
         }
@@ -119,5 +117,10 @@ public class CommentService {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("해당 사용자의 댓글을 찾을 수 없습니다."));
     }
+
+
+
+
+
 }
 
