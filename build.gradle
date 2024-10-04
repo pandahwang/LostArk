@@ -34,7 +34,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// json 관련 라이브러리
 	implementation("com.googlecode.json-simple:json-simple:1.1.1")
-
 }
 
 tasks.named('test') {
