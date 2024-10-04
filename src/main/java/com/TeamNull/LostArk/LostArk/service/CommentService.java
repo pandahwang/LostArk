@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class CommentService {
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
 
-    public Map<String, Object> getComments(int page, Pageable pageable) {
+    public Map<String, Object> getComments(int page,@PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Pageable pageRequest = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
         Page<Comment> comments = commentRepository.findAll(pageRequest);
 
