@@ -11,7 +11,7 @@ public class CommentDto {
     private String content;
     private String password;
     private String nickname;
-    private UUID userId; // User 대신 UUID로 변경
+    private UUID userID; // User 대신 UUID로 변경
     private Timestamp updatedAt;
 
     // Jackson이 직렬화/역직렬화를 위해 기본 생성자가 필요합니다.
@@ -23,14 +23,14 @@ public class CommentDto {
                       String content,
                       String password,
                       String nickname,
-                      UUID userId) {
+                      UUID userID) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.content = content;
         this.password = password;
         this.nickname = nickname;
-        this.userId = userId;
+        this.userID = userID;
     }
 
     @Data

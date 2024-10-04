@@ -17,12 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Timestamp;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,7 @@ public class CommentService {
                 .map(comment -> new CommentDto.CommentResponseDto(
                         comment.getId(),
                         comment.getCreatedAt(),
-                        comment.getPassword(),
+                        comment.getContent(),
                         comment.getUser().getId(),
                         comment.getTopFactorResult(),
                         comment.getNickName()
@@ -53,10 +53,10 @@ public class CommentService {
 
         Map<String, Object> response = new HashMap<>();
         response.put("comments", responseDtoList);
-        response.put("TOTALPAGE", totalPage);
-        response.put("CURRENTPAGE", currentPage);
-        response.put("STARTPAGE", startPage);
-        response.put("ENDPAGE", endPage);
+        response.put("totalPages", totalPage);
+        response.put("currentPage", currentPage);
+        response.put("startPage", startPage);
+        response.put("endPage", endPage);
 
         return response;
     }
@@ -64,35 +64,35 @@ public class CommentService {
     public void creation( String content,
                             String password,
                             String nickname,
-                            UUID userId
-                            )  //Controller에서 전이된 변수 인자를 받음
+                            UUID userID
+                            )
     {
-        Comment comment = new Comment();//엔티티 변수를 만들어 set을 통해 body로 부터 추출한 자료를 데이터베이스의 데이터를 추가
+        Comment comment = new Comment();
 
+        comment.setNickName(nickname);
         comment.setPassword(password);
         comment.setContent(content);
-        comment.setNickName(nickname);
-        String topFactorResult = resultRepository.findByUserId(userId)//resultRepository를 통해 userId를 찾아 userId가 포함된 모든 인스턴스(행)을 자져옴.
-                        .map(result -> result.getTopFactor1().getJobName())//가져온 인스턴스에서 getJobName 속성의 String 자료만 추출함
-                                .orElseThrow(()-> new IllegalArgumentException("없습니다" + userId));
+        String topFactorResult = resultRepository.findByUserId(userID)
+                        .map(result -> result.getTopFactor1().getJobName())
+                                .orElseThrow(()-> new IllegalArgumentException("사용자의 정보가 존재하지 않습니다.." + userID));
         comment.setTopFactorResult(topFactorResult);
 
-        User user = userRepository.findById(userId)// url로 부터 추출한 userId를 userRepository를 통해 찾아 Comment의 User user 변수에 저장
-                        .orElseThrow(()-> new IllegalArgumentException("없습니다."));
-        comment.setUser(user); //그리고 set을 통해 데이터베이스의 데이터를 추가
+        User user = userRepository.findById(userID)
+                        .orElseThrow(()-> new IllegalArgumentException("사용자의 아이디가 존재하지 않습니다.."));
+        comment.setUser(user);
 
 
-        commentRepository.save(comment);//설정이 완료된 Comment 객체를 데이터베이스에 저장합니다.
+        commentRepository.save(comment);
     }
 
-    public ResponseEntity<String> removal(UUID userId,
+    public ResponseEntity<String> removal(UUID userID,
                         Integer commentId,
                         String password){
         if (password == null || password.isEmpty()) {
             return  ResponseEntity.badRequest().body("비밀번호가 없습니다.");
         }
 
-      return commentRepository.findByUserIdAndId(userId, commentId)
+      return commentRepository.findByUserIdAndId(userID, commentId)
                 .filter(comment -> comment.getPassword().equals(password))
                 .map(comment -> {
                     commentRepository.deleteById(commentId);
@@ -103,20 +103,19 @@ public class CommentService {
     }
 
 
-    public ResponseEntity<String> edition(UUID userId, Integer commentId, String password, String Content)
-    {
+    public ResponseEntity<String> edition(UUID userID, Integer commentId, String password, String content) {
         if (password == null || password.isEmpty()) {
-            return   ResponseEntity.badRequest().body("요청 본문 또는 비밀번호가 없습니다.");
+            return ResponseEntity.badRequest().body("비밀번호를 입력해주세요.");
         }
-        return commentRepository.findByUserIdAndId(userId, commentId)
+        return commentRepository.findByUserIdAndId(userID, commentId)
                 .filter(comment -> comment.getPassword().equals(password))
                 .map(comment -> {
-                    comment.setContent(Content);
-                    commentRepository.save(comment);
+                    comment.setContent(content);  // 댓글 내용 업데이트
+                    commentRepository.save(comment);  // 업데이트된 댓글 저장
                     return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
-
-                }).orElseGet(()->  ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("해당 사용자가 작성한 댓글을 찾을 수 없습니다."));
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("해당 사용자의 댓글을 찾을 수 없습니다."));
     }
 }
 
