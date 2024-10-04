@@ -59,4 +59,6 @@ public class CommentDto {
             this.nickname = nickname;
         }
     }
+
+
 }

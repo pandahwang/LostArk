@@ -17,13 +17,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -118,9 +117,19 @@ public class CommentService {
                         .body("해당 사용자의 댓글을 찾을 수 없습니다."));
     }
 
+    public List<CommentDto.CommentResponseDto>  getCommentSearch(String SearchText ){
 
+        List<Comment> search = commentRepository.findByTopFactorResultContainingIgnoreCase(SearchText);
 
-
-
+        return search.stream()
+                .map(comment -> new CommentDto.CommentResponseDto(
+                        comment.getId(),
+                        comment.getCreatedAt(),
+                        comment.getContent(),
+                        comment.getUser().getId(),
+                        comment.getTopFactorResult(),
+                        comment.getNickName()))
+                .collect(Collectors.toList());
+    }
 }
 

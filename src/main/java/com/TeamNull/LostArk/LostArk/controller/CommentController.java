@@ -1,6 +1,7 @@
 package com.TeamNull.LostArk.LostArk.controller;
 
 import com.TeamNull.LostArk.LostArk.dto.CommentDto;
+import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,14 @@ public class CommentController {
                                                 @PathVariable int commentId,
                                                 @RequestBody CommentDto updatedComment) {
         return commentService.getCommentUpdate(userID, commentId, updatedComment.getPassword(), updatedComment.getContent());
+    }
+
+
+    @PostMapping("/search")
+    public List<CommentDto.CommentResponseDto> commentSearch(@RequestBody CommentDto.CommentResponseDto commentDto){
+
+      return commentService.getCommentSearch(commentDto.getTopFactorResult());
+
     }
 
 }
