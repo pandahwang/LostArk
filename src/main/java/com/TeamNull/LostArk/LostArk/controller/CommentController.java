@@ -1,6 +1,7 @@
 package com.TeamNull.LostArk.LostArk.controller;
 
 import com.TeamNull.LostArk.LostArk.dto.CommentDto;
+import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,37 +23,45 @@ public class CommentController {
 
 
     @GetMapping("/{abc}")
-    public Map<String, Object> commentAdd(@PathVariable Integer abc,
-                                          @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.ASC)
+    public Map<String, Object> commentPage(@PathVariable Integer abc,
+                                          @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         return commentService.getComments(abc, pageable);
     }
 
-    @PostMapping("/{userId}")
-    public void addComment(@PathVariable UUID userId, @RequestBody CommentDto commentDto)
+    @PostMapping("/{userID}")
+    public void addComment(@PathVariable("userID") UUID userID, @RequestBody CommentDto commentDto)
     {
-        commentService.creation(commentDto.getContent(),
+        commentService.getAddComment(commentDto.getContent(),
                 commentDto.getPassword(),
                 commentDto.getNickname(),
-                userId
+                userID
         );
     }
 
-    @DeleteMapping("/delete/{userId}/{commentId}")
-    public ResponseEntity<String> commentDelete(@PathVariable UUID userId,
+    @DeleteMapping("/delete/{userID}/{commentId}")
+    public ResponseEntity<String> commentDelete(@PathVariable("userID") UUID userID,
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
     {
-       return commentService.removal(userId,commentId,dropComment.getPassword());
+       return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
     }
 
-    @PutMapping("/update/{userId}/{commentId}")
-    public ResponseEntity<String> commentUpdate(@PathVariable UUID userId,
-                                        @PathVariable int commentId,
-                                        @RequestBody CommentDto updatedComment)
-    {
-       return commentService.edition(userId,commentId,updatedComment.getPassword(),updatedComment.getContent());
+    @PutMapping("/update/{userID}/{commentId}")
+    public ResponseEntity<String> commentUpdate(@PathVariable("userID") UUID userID,
+                                                @PathVariable int commentId,
+                                                @RequestBody CommentDto updatedComment) {
+        return commentService.getCommentUpdate(userID, commentId, updatedComment.getPassword(), updatedComment.getContent());
     }
+
+
+    @PostMapping("/search")
+    public List<CommentDto.CommentResponseDto> commentSearch(@RequestBody CommentDto.CommentResponseDto commentDto){
+
+      return commentService.getCommentSearch(commentDto.getTopFactorResult());
+
+    }
+
 }
 
 
