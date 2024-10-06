@@ -9,6 +9,7 @@ import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ public class CommentService {
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
 
+    @Cacheable(cacheNames = "getComments", key = "'comments:page:' + #page", cacheManager = "commentCacheManager")
     public Map<String, Object> getComments(int page,@PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Comment> comments = commentRepository.findAll(PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort()));
         List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
