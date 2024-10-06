@@ -27,7 +27,4 @@ jobs:
             ./gradlew clean build
             sudo fuser -k -n tcp 8080 || true
             sudo systemctl stop redis
-            # 도커로 빌드한 이미지를 실행
             docker compose -f compose-prod.yml up --build -d
-            # 백그라운드로 서버 실행
-            # nohup java -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
