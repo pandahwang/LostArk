@@ -1,5 +1,6 @@
 package com.TeamNull.LostArk.LostArk;
 
+import com.TeamNull.LostArk.LostArk.controller.CommentController;
 import com.TeamNull.LostArk.LostArk.controller.DataController;
 import com.TeamNull.LostArk.LostArk.controller.OuterDataController;
 import com.TeamNull.LostArk.LostArk.controller.ResultController;
@@ -10,6 +11,9 @@ import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
@@ -24,13 +28,15 @@ class LostArkApplicationTests {
 	private OuterDataController outerDataController;
 	private DataController dataController;
 	private ResultController resultController;
+	private CommentController commentController;
 
 	@Autowired
-	public LostArkApplicationTests(OuterDataController outerDataController, DataController dataController, ResultController resultController) {
+	public LostArkApplicationTests(OuterDataController outerDataController, DataController dataController, ResultController resultController, CommentController commentController) {
 		super();
 		this.outerDataController = outerDataController;
 		this.dataController = dataController;
 		this.resultController = resultController;
+		this.commentController = commentController;
 	}
 
 //	@Test
@@ -41,11 +47,6 @@ class LostArkApplicationTests {
 //		System.out.println(outerDataDtoList.get(0).getName());
 //		System.out.println(outerDataDtoList.get(0).getValue());
 //		System.out.println(outerDataDtoList.get(0).getIcon());
-//	}
-//
-//	@Test
-//	void testCreateAlluser() throws IOException, ParseException {
-//		this.outerDataController.createAlluser();
 //	}
 
 //	@Test
@@ -62,10 +63,10 @@ class LostArkApplicationTests {
 //		this.resultController.top5(UUID.fromString("f9ceff67-e36b-43d9-89a8-263a334a6313"));
 //	}
 
-	@Test
-	void testResult() {
-		ResponseEntity<List<ResultDto>> result = this.resultController.result(UUID.fromString("ffb057b9-0b82-4789-8440-ded61c248cd2"));
-		System.out.println(result.getBody().get(0).getName());
-	}
+//	@Test
+//	void testResult() {
+//		ResponseEntity<List<ResultDto>> result = this.resultController.result(UUID.fromString("ffb057b9-0b82-4789-8440-ded61c248cd2"));
+//		System.out.println(result.getBody().get(0).getName());
+//	}
 
 }
