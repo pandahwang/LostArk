@@ -4,9 +4,9 @@ import com.TeamNull.LostArk.LostArk.dto.DataDto;
 import com.TeamNull.LostArk.LostArk.service.DataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -17,6 +17,12 @@ public class DataController {
 
     @GetMapping("/statistics/data")
     public List<DataDto> read () {
-        return dataService.findById(1);
+        List<DataDto> resData = null;
+        try {
+            resData = dataService.read();
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return resData;
     }
 }

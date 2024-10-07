@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,12 @@ public class OuterDataController {
 
     @GetMapping("/statistics/alluser")
     public List<OuterDataDto> alluser() {
-        List<OuterDataDto> resData = outerDataService.read();
+        List<OuterDataDto> resData = null;
+        try {
+            resData = outerDataService.read();
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return resData;
     }
 

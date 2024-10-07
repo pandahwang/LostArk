@@ -1,4 +1,4 @@
-package com.TeamNull.LostArk.LostArk;
+package com.TeamNull.LostArk.LostArk.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -10,7 +10,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins(
+                        "http://localhost:3000",
+                        "http://52.79.232.220:3000", // front IP 주소 추가할 곳""
+                        "http://classtest.site",
+                        "http://la.classtest.site"
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
