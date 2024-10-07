@@ -9,11 +9,7 @@ import com.TeamNull.LostArk.LostArk.repository.ResultRepository;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +30,22 @@ public class CommentService {
     private final ResultRepository resultRepository;
     private final UserRepository userRepository;
 
-    @Cacheable(cacheNames = "getComments", key = "'comments:page:' + #page", cacheManager = "commentCacheManager")
-    public Map<String, Object> getComments(int page,@PageableDefault(size = 5,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Comment> comments = commentRepository.findAll(PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort()));
-        List<CommentDto.CommentResponseDto> responseDtoList = comments.getContent().stream()
-                .map(comment -> new CommentDto.CommentResponseDto(
-                        comment.getId(),
-                        comment.getCreatedAt(),
-                        comment.getContent(),
-                        comment.getUser().getId(),
-                        comment.getTopFactorResult(),
-                        comment.getNickName()
-                )).toList();
+    public Map<String, Object> getComments(int page, String searchText, Pageable pageable) {
+        Page<CommentDto.CommentResponseDto> comments;
+
+        if (searchText != null && !searchText.isEmpty()) {
+            comments = getCommentSearch(searchText, PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort()));
+        } else {
+            comments = commentRepository.findAll(PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort()))
+                    .map(comment -> new CommentDto.CommentResponseDto(
+                            comment.getId(),
+                            comment.getCreatedAt(),
+                            comment.getContent(),
+                            comment.getUser().getId(),
+                            comment.getTopFactorResult(),
+                            comment.getNickName()
+                    ));
+        }
 
         int totalPage = comments.getTotalPages();
         int currentPage = comments.getNumber() + 1;
@@ -53,13 +53,14 @@ public class CommentService {
         int endPage = Math.min(totalPage, startPage + 4);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("comments", responseDtoList);
+        response.put("comments", comments.getContent());
         response.put("totalPages", totalPage);
         response.put("currentPage", currentPage);
         response.put("startPage", startPage);
         response.put("endPage", endPage);
 
         return response;
+
     }
 
     public void getAddComment( String content,
@@ -119,19 +120,26 @@ public class CommentService {
                         .body("해당 사용자의 댓글을 찾을 수 없습니다."));
     }
 
-    public List<CommentDto.CommentResponseDto>  getCommentSearch(String SearchText ){
+    public Page<CommentDto.CommentResponseDto> getCommentSearch(String searchText, Pageable pageable) {
+        List<Comment> search = commentRepository.findByTopFactorResultContainingIgnoreCase(searchText);
 
-        List<Comment> search = commentRepository.findByTopFactorResultContainingIgnoreCase(SearchText);
-
-        return search.stream()
+        // 검색 결과를 페이지네이션 형태로 변환
+        List<CommentDto.CommentResponseDto> responseDtoList = search.stream()
                 .map(comment -> new CommentDto.CommentResponseDto(
                         comment.getId(),
                         comment.getCreatedAt(),
                         comment.getContent(),
                         comment.getUser().getId(),
                         comment.getTopFactorResult(),
-                        comment.getNickName()))
-                .collect(Collectors.toList());
+                        comment.getNickName()
+                )).toList();
+
+        // 페이지네이션 처리
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), responseDtoList.size());
+
+        return new PageImpl<>(responseDtoList.subList(start, end), pageable, responseDtoList.size());
+
     }
 }
 
