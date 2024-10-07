@@ -3,6 +3,7 @@ package com.TeamNull.LostArk.LostArk.controller;
 import com.TeamNull.LostArk.LostArk.dto.DataDto;
 import com.TeamNull.LostArk.LostArk.service.DataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ public class DataController {
     private final DataService dataService;
 
     @GetMapping("/statistics/data")
+
+    @Cacheable(cacheNames = "getData", key = "data", cacheManager = "cacheManager")
     public List<DataDto> read () {
         List<DataDto> resData = null;
         try {
