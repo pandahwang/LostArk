@@ -14,7 +14,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3000",
                         "http://52.79.232.220:3000", // front IP 주소 추가할 곳""
                         "http://classtest.site",
-                        "http://la.classtest.site"
+                        "http://la.classtest.site",
+                        "https:/classtest.site",
+                        "https://la.classtest.site"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
