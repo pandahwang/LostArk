@@ -4,6 +4,7 @@ import com.TeamNull.LostArk.LostArk.dto.DataDto;
 import com.TeamNull.LostArk.LostArk.service.DataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class DataController {
 
     private final DataService dataService;
