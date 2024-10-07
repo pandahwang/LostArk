@@ -4,6 +4,7 @@ import com.TeamNull.LostArk.LostArk.dto.OuterDataDto;
 import com.TeamNull.LostArk.LostArk.service.OuterDataService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class OuterDataController {
     private final OuterDataService outerDataService;
 
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
-
+    @Cacheable(cacheNames = "getOuterData", key = "outerdata", cacheManager = "cacheManager")
     @GetMapping("/statistics/alluser")
     public List<OuterDataDto> alluser() {
         List<OuterDataDto> resData = null;
