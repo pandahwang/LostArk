@@ -22,12 +22,13 @@ public class CommentController {
     private final CommentService commentService;
 
 
-    @GetMapping("/{abc}")
-    public Map<String, Object> commentPage(@PathVariable Integer abc,
-                                          @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC)
-                                          Pageable pageable) {
-        return commentService.getComments(abc, pageable);
+    @GetMapping("/{page}")
+    public Map<String, Object> commentPage(@PathVariable Integer page,
+                                           @RequestParam(required = false) String searchText,
+                                           @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return commentService.getComments(page, searchText, pageable);
     }
+
 
     @PostMapping("/{userID}")
     public void addComment(@PathVariable("userID") UUID userID, @RequestBody CommentDto commentDto)
@@ -44,7 +45,7 @@ public class CommentController {
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
     {
-       return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
+        return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
     }
 
     @PutMapping("/update/{userID}/{commentId}")
@@ -54,16 +55,7 @@ public class CommentController {
         return commentService.getCommentUpdate(userID, commentId, updatedComment.getPassword(), updatedComment.getContent());
     }
 
-
-    @PostMapping("/search")
-    public List<CommentDto.CommentResponseDto> commentSearch(@RequestBody CommentDto.CommentResponseDto commentDto){
-
-      return commentService.getCommentSearch(commentDto.getTopFactorResult());
-
-    }
-
 }
-
 
 
 
