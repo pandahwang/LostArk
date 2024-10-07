@@ -6,6 +6,7 @@ import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import com.TeamNull.LostArk.LostArk.service.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class UserController {
         return ResponseEntity.ok(newUser.getId());
     }
 
+    @Cacheable(cacheNames = "getUser", key = "'users:id' + #id", cacheManager = "cacheManager")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable UUID id) {
         // id로 User 객체를 찾아 반환
