@@ -45,7 +45,7 @@ public class CommentController {
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
     {
-       return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
+        return commentService.getCommentDelete(userID,commentId,dropComment.getPassword());
     }
 
     @PutMapping("/update/{userID}/{commentId}")
@@ -56,7 +56,6 @@ public class CommentController {
     }
 
 }
-
 
 
 
