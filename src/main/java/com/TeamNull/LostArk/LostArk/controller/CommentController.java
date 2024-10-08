@@ -24,7 +24,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @Cacheable(cacheNames = "getComments", key = "'comments:page:' + #page + ':searchText:' + #searchText", cacheManager = "commentCacheManager")
+//    @Cacheable(cacheNames = "getComments", key = "'comments:page:' + #page + ':searchText:' + #searchText", cacheManager = "commentCacheManager")
     @GetMapping("/{page}")
     public Map<String, Object> commentPage(@PathVariable Integer page,
                                            @RequestParam(required = false) String searchText,
@@ -34,7 +34,7 @@ public class CommentController {
 
 
     @PostMapping("/{userID}")
-    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
+//    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public void addComment(@PathVariable("userID") UUID userID, @RequestBody CommentDto commentDto)
     {
         commentService.getAddComment(commentDto.getContent(),
@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete/{userID}/{commentId}")
-    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
+//    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public ResponseEntity<String> commentDelete(@PathVariable("userID") UUID userID,
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
@@ -54,7 +54,7 @@ public class CommentController {
     }
 
     @PutMapping("/update/{userID}/{commentId}")
-    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
+//    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public ResponseEntity<String> commentUpdate(@PathVariable("userID") UUID userID,
                                                 @PathVariable int commentId,
                                                 @RequestBody CommentDto updatedComment) {
