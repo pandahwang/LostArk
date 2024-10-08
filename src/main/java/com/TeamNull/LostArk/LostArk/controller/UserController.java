@@ -31,7 +31,10 @@ public class UserController {
     @Cacheable(cacheNames = "getUser", key = "'users:id' + #id", cacheManager = "cacheManager")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable UUID id) {
-        // id로 User 객체를 찾아 반환
-        return ResponseEntity.ok(userRepository.findById(id).get());
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 }
