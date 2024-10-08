@@ -19,7 +19,6 @@ public class OuterDataController {
     private final OuterDataService outerDataService;
 
     // 목표 : Get 요청 시 api로부터 데이터를 받아와 저장 후 반환하도록 구현.
-    @Cacheable(cacheNames = "getOuterData", key = "outerdata", cacheManager = "cacheManager")
     @GetMapping("/statistics/alluser")
     public List<OuterDataDto> alluser() {
         List<OuterDataDto> resData = null;
