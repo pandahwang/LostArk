@@ -4,6 +4,7 @@ import com.TeamNull.LostArk.LostArk.dto.UserDto;
 import com.TeamNull.LostArk.LostArk.entity.User;
 import com.TeamNull.LostArk.LostArk.repository.UserRepository;
 import com.TeamNull.LostArk.LostArk.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,9 @@ public class UserController {
         return ResponseEntity.ok(newUser.getId());
     }
 
-    @Cacheable(cacheNames = "getUser", key = "'users:id' + #id", cacheManager = "cacheManager")
     @GetMapping("/{id}")
-    public User getUser(@PathVariable UUID id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        return user;
+    public ResponseEntity<User> getUser(@PathVariable UUID id) {
+        // id로 User 객체를 찾아 반환
+        return ResponseEntity.ok(userRepository.findById(id).get());
     }
 }
