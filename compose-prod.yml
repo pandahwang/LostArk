@@ -10,6 +10,7 @@ services:
         condition: service_healthy
   cache-server:
     image: redis
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
     ports:
       - 6379:6379
     healthcheck:
