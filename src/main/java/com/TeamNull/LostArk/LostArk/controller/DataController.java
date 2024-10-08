@@ -20,7 +20,6 @@ public class DataController {
 
     @GetMapping("/statistics/data")
 
-    @Cacheable(cacheNames = "getData", key = "data", cacheManager = "cacheManager")
     public List<DataDto> read () {
         List<DataDto> resData = null;
         try {
