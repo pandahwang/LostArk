@@ -4,6 +4,7 @@ import com.TeamNull.LostArk.LostArk.dto.CommentDto;
 import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +22,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-
+    @Cacheable(cacheNames = "getComments", key = "'comments:page:' + #page + ':searchText:' + #searchText", cacheManager = "commentCacheManager")
     @GetMapping("/{page}")
     public Map<String, Object> commentPage(@PathVariable Integer page,
                                            @RequestParam(required = false) String searchText,
