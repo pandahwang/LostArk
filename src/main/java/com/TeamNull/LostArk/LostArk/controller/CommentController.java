@@ -4,6 +4,8 @@ import com.TeamNull.LostArk.LostArk.dto.CommentDto;
 import com.TeamNull.LostArk.LostArk.entity.Comment;
 import com.TeamNull.LostArk.LostArk.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,6 +34,7 @@ public class CommentController {
 
 
     @PostMapping("/{userID}")
+    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public void addComment(@PathVariable("userID") UUID userID, @RequestBody CommentDto commentDto)
     {
         commentService.getAddComment(commentDto.getContent(),
@@ -42,6 +45,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete/{userID}/{commentId}")
+    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public ResponseEntity<String> commentDelete(@PathVariable("userID") UUID userID,
                                                 @PathVariable Integer commentId,
                                                 @RequestBody CommentDto dropComment)
@@ -50,6 +54,7 @@ public class CommentController {
     }
 
     @PutMapping("/update/{userID}/{commentId}")
+    @CacheEvict(cacheNames = "getComments", allEntries = true, cacheManager = "commentCacheManager")
     public ResponseEntity<String> commentUpdate(@PathVariable("userID") UUID userID,
                                                 @PathVariable int commentId,
                                                 @RequestBody CommentDto updatedComment) {
