@@ -1,6 +1,9 @@
-# 로스트아크 직업 추천 팀 프로제트  
+# 로스트아크 직업 추천 팀 프로젝트 백엔드    
 Spring Boot와 React을 이용하여 구현한 웹 애플리케이션  
-링크: https://la.classtest.site/
+링크: https://la.classtest.site/  
+
+## 프론트엔드 링크  
+https://github.com/pandahwang/la-front-end  
 
 ## 사용 기술  
 Java, Javascript, Typescript, SpringBoot, React, TailwindCSS, AWS RDS, EC2, Route53, ALB, ACM, Redis, Docker, Github Actions(CI/CD), Nginx  
