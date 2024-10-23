@@ -33,7 +33,7 @@ public class OuterDataService {
     private final OuterDataRepository outerDataRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // json 파일을 읽어와서 DB에 저장하는 메소드
+    // json 파일을 읽어오는 메서드
     private Map<String, JobAttributes> loadJobAttributesFromJson() {
         try {
             InputStream inputStream = getClass().getResourceAsStream("/LostArk.json");
@@ -82,7 +82,7 @@ public class OuterDataService {
             }
         }
 
-        // 받아온 JSON 배열을 Dto에 넣어서 save
+        // 받아온 JSON 배열을 Entity에 넣어서 save
         OuterData outerData = new OuterData();
         for (Object obj : classTotalArr){
             JSONObject classData = (JSONObject) obj;
