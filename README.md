@@ -1,6 +1,6 @@
 # 로스트아크 직업 추천 팀 프로젝트 백엔드    
 Spring Boot와 React을 이용하여 구현한 웹 애플리케이션  
-웹 서비스 링크: https://la.classtest.site/
+웹 서비스 링크: https://la.classtest.site/  
 프레젠테이션 링크 : https://writhing-fish-ggqnac6.gamma.site/
 
 ## 프론트엔드 링크  
