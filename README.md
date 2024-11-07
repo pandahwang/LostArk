@@ -10,7 +10,8 @@ https://github.com/pandahwang/la-front-end
 Java, Javascript, Typescript, SpringBoot, React, TailwindCSS, AWS RDS, EC2, Route53, ALB, ACM, Redis, Docker, Github Actions(CI/CD), Nginx  
 
 ## 인프라 아키텍처  
-![la_classtest_site drawio](https://github.com/user-attachments/assets/aa62f48e-44b1-4083-b384-41259a1901ce)  
+![la_classtest_site drawio](https://github.com/user-attachments/assets/28070393-85eb-4c30-be22-3615df3003ed)  
+
 
 - 서버: AWS EC2 (Ubuntu)  
 - SSL 인증 : ACM을 이용하여 SSL 인증  
